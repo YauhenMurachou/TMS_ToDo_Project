@@ -1,0 +1,27 @@
+a {
+	text-decoration: none;
+}
+
+.nav-container {
+	display: flex;
+	justify-content: flex-end;
+	background-color: rgb(243, 52, 52);
+	align-items: center;
+	height: 100px;
+
+	.nav-item {
+		cursor: pointer;
+		height: 100px;
+		font-size: 25px;
+		width: 150px;
+		line-height: 100px;
+		text-align: center;
+		color: white;
+	}
+
+	.nav-item:hover {
+		background-color: white;
+		color: rgb(243, 52, 52);
+		transition: 0.7s;
+	}
+}
