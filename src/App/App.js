@@ -32,7 +32,7 @@ const App = () => {
 			<AuthorizedRoute exact path={Routes.UsersRoute} component={Users} />
 		</Router>
 	)
-}
+};
 
 
 export default App;
