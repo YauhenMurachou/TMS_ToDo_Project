@@ -164,7 +164,7 @@ function ToDoApp() {
 				Сортировать задачи по возрастанию
 			</button>
 
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} className='todo-form'>
 				<label className='label-ToDo' htmlFor='new-todo'>
 					Что нужно сделать?
 				</label>
