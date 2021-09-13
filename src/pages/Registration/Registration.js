@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Routes } from '../../utils/routes';
 
-import '../Registration/Registration.scss'
+import '../Registration/Registration.scss';
 
 const Registration = () => {
 	return (
@@ -12,7 +12,6 @@ const Registration = () => {
 			</h1>
 
 			<form action='#' method='post' className='registr-form'>
-
 				<div className='imgcontainer'>
 					<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgxfDAMqK3mhyikTk6uhY8Bn3HdpjkMvuzLQ&usqp=CAU' alt='Avatar' class='avatar' />
 				</div>
