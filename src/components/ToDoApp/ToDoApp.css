@@ -6,7 +6,7 @@ button {
 	margin-left: 20px;
 }
 
-form {
+.todo-form {
 	display: flex;
 	align-items: flex-end;
 }
