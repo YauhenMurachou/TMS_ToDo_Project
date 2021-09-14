@@ -3,6 +3,16 @@
 	max-width: 400px;
 	margin: 0 auto 15px auto;
 
+	.imgcontainer {
+		text-align: center;
+		margin: 24px 0 12px 0;
+	}
+
+	img.avatar {
+		width: 40%;
+		border-radius: 50%;
+	}
+
 	.sub-btn {
 		background-color: rgb(243, 52, 52);
 		color: white;
@@ -24,28 +34,30 @@
 		background-color: rgb(243, 52, 52);
 	}
 
-	.imgcontainer {
-		text-align: center;
-		margin: 24px 0 12px 0;
-	}
-
-	img.avatar {
-		width: 40%;
-		border-radius: 50%;
-	}
-
-	.login-input,
-	.password-input {
-		width: 100%;
-		padding: 12px 20px;
-		margin: 8px 0;
-		display: inline-block;
-		border: 1px solid #ccc;
-		box-sizing: border-box;
-	}
-
 	.container {
 		padding: 16px;
+
+		label{
+			font-size: 24px;
+		}
+
+		.login-input,
+		.password-input {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0 0 0;
+			display: inline-block;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+		}
+
+		.login-error,
+		.psw-error {
+			color: rgb(243, 52, 52);
+			font-size: 14px;
+			text-align: center;
+			margin-bottom: 10px;			
+		}
 	}
 
 	.form-or {
@@ -63,7 +75,7 @@
 	margin: 0 auto;
 	display: block;
 	background-color: rgb(85, 101, 240);
-	border: none; 
+	border: none;
 	outline: none;
 	padding: 10px;
 
@@ -73,5 +85,5 @@
 
 	span {
 		color: white;
-	}	
+	}
 }
