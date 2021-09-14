@@ -9,16 +9,40 @@ const SignIn = () => {
 	const [loginForm, setLoginForm] = useState({ loginValue: '', pswValue: '' });
 	const [loginFormError, setLoginFormError] = useState({ loginError: '', pswError: '' });
 
-	const handleCheckEmptyForm = (event, inputName, errorName) => {
+	const handleCheckEmptyInput = (loginForm, loginFormError, inputName, errorName) => {
+		if (loginForm[inputName] === '') {
+			loginFormError[errorName] = 'empty'
+			return true
+		}
+		return false
+	}
+
+
+	const handleCheckEmptyForm = (event = {}, inputName = '', errorName = '') => {
 		const loginFormCopy = { ...loginForm };
 		const loginFormErrorCopy = { ...loginFormError };
+		let resultCheckEmpty = false;
+		let resultCheckEmptyLogin = false;
+		let resultCheckEmptyPsw = false;
 
-		if (loginFormCopy[inputName] === '') {
-			loginFormErrorCopy[errorName] = 'empty'
+		if (inputName !== '' && errorName !== '') {
+			handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, inputName, errorName)
 			setLoginFormError(loginFormErrorCopy)
-		}
+			return true
 
+		} else {
+
+			resultCheckEmptyLogin = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'loginValue', 'loginError')
+			resultCheckEmptyPsw = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'pswValue', 'pswError')
+			resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPsw
+
+			setLoginFormError(loginFormErrorCopy)
+			return true
+		}
+		return resultCheckEmpty
 	}
+
+
 
 	const handleChangeLoginForm = (event, inputName, errorName) => {
 		const loginFormCopy = { ...loginForm };
@@ -30,14 +54,21 @@ const SignIn = () => {
 		setLoginForm(loginFormCopy);
 	};
 
+	const handleSubmitForm = (event) => {
+		event.preventDefault()
+		if (handleCheckEmptyForm()) {
+			return
+		}
+	}
+
+
 	const { loginValue, pswValue } = loginForm;
 	const { loginError, pswError } = loginFormError;
 
 
-
 	return (
 		<div>
-			<form action='#' method='post' className='registr-form'>
+			<form className='registr-form' onSubmit={handleSubmitForm}>
 
 				<div className='imgcontainer'>
 					<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgxfDAMqK3mhyikTk6uhY8Bn3HdpjkMvuzLQ&usqp=CAU' alt='Avatar' class='avatar' />
@@ -50,7 +81,7 @@ const SignIn = () => {
 						value={loginValue}
 						onChange={event => handleChangeLoginForm(event, 'loginValue', 'loginError')}
 						onBlur={event => handleCheckEmptyForm(event, 'loginValue', 'loginError')}
-						required />
+					/>
 
 					{
 						loginError === 'empty' &&
@@ -63,7 +94,7 @@ const SignIn = () => {
 						value={pswValue}
 						onChange={event => handleChangeLoginForm(event, 'pswValue', 'pswError')}
 						onBlur={event => handleCheckEmptyForm(event, 'pswValue', 'pswError')}
-						required />
+					/>
 
 					{
 						pswError === 'empty' &&
