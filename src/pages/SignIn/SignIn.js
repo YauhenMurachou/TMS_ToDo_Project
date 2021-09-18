@@ -17,7 +17,6 @@ const SignIn = () => {
 		return false
 	}
 
-
 	const handleCheckEmptyForm = (event = {}, inputName = '', errorName = '') => {
 		const loginFormCopy = { ...loginForm };
 		const loginFormErrorCopy = { ...loginFormError };
@@ -76,7 +75,7 @@ const SignIn = () => {
 
 				<div className='container'>
 					<label for='login'><b>Username</b></label>
-					<input type='email' placeholder='Enter Login'
+					<input type='text' placeholder='Enter username'
 						name='login' className='login-input'
 						value={loginValue}
 						onChange={event => handleChangeLoginForm(event, 'loginValue', 'loginError')}
@@ -85,7 +84,7 @@ const SignIn = () => {
 
 					{
 						loginError === 'empty' &&
-						<div className='login-error'>Please, enter login </div>
+						<div className='login-error'>Please, enter username </div>
 					}
 
 					<label for='psw'><b>Password</b></label>
