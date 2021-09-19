@@ -8,11 +8,16 @@ const SignIn = () => {
 
 	const [loginForm, setLoginForm] = useState({ loginValue: '', pswValue: '' });
 	const [loginFormError, setLoginFormError] = useState({ loginError: '', pswError: '' });
+	// types of errors. '' - no errors, 'empty', 'notValid', 'notExists' - no answer from server
+
+	const { loginValue, pswValue } = loginForm;
+	const { loginError, pswError } = loginFormError;
 
 	const handleCheckEmptyInput = (loginForm, loginFormError, inputName, errorName) => {
 		if (loginForm[inputName] === '') {
 			loginFormError[errorName] = 'empty'
 			return true
+			// если пустая строка, то код ошибки соответствующий  и возвр тру
 		}
 		return false
 	}
@@ -24,15 +29,18 @@ const SignIn = () => {
 		let resultCheckEmptyLogin = false;
 		let resultCheckEmptyPsw = false;
 
+		// если передаются аргументы в конкретном инпуте, не равные пустой строке, то вызывается handleCheckEmptyInput,
+		//  который устанавливает код ошибки empty, если строка пустая, и возвр тру. И затем переписываются ошибки
 		if (inputName !== '' && errorName !== '') {
 			handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, inputName, errorName)
 			setLoginFormError(loginFormErrorCopy)
 			return true
 
 		} else {
-
+			// check all inputs
 			resultCheckEmptyLogin = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'loginValue', 'loginError')
 			resultCheckEmptyPsw = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'pswValue', 'pswError')
+			// если хотя бы один вернёт тру, то общий результат тру.  иначе фолс
 			resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPsw
 
 			setLoginFormError(loginFormErrorCopy)
@@ -44,25 +52,30 @@ const SignIn = () => {
 
 
 	const handleChangeLoginForm = (event, inputName, errorName) => {
+		// копии стэйтов
 		const loginFormCopy = { ...loginForm };
 		const loginFormErrorCopy = { ...loginFormError };
 		const { value: inputValue } = event.target;
+		// деструктуризация, inputValue=введённое значение
 		loginFormErrorCopy[errorName] = '';
+		// сброс надписи про пустой инпут
 		setLoginFormError(loginFormErrorCopy);
+
+		// строчкой ниже значение поля inputName объекта loginFormCopy равно введённому значению
 		loginFormCopy[inputName] = inputValue;
+		// in useState loginValue. in input value={loginValue}. in input handleChangeLoginForm we call with 'loginValue'
+		// Its reason why inputName = 'loginValue'
 		setLoginForm(loginFormCopy);
+		// перезаписываем стэйт
 	};
 
 	const handleSubmitForm = (event) => {
 		event.preventDefault()
+		// if form is empty return from this function
 		if (handleCheckEmptyForm()) {
 			return
 		}
 	}
-
-
-	const { loginValue, pswValue } = loginForm;
-	const { loginError, pswError } = loginFormError;
 
 
 	return (
@@ -74,11 +87,12 @@ const SignIn = () => {
 				</div>
 
 				<div className='container'>
-					<label for='login'><b>Username</b></label>
+					<label for='loginValue'><b>Username</b></label>
 					<input type='text' placeholder='Enter username'
-						name='login' className='login-input'
+						name='loginValue' className='login-input'
 						value={loginValue}
 						onChange={event => handleChangeLoginForm(event, 'loginValue', 'loginError')}
+						// at start was written field name
 						onBlur={event => handleCheckEmptyForm(event, 'loginValue', 'loginError')}
 					/>
 
@@ -87,9 +101,9 @@ const SignIn = () => {
 						<div className='login-error'>Please, enter username </div>
 					}
 
-					<label for='psw'><b>Password</b></label>
+					<label for='pswValue'><b>Password</b></label>
 					<input type='password' placeholder='Enter Password'
-						name='psw' className='password-input'
+						name='pswValue' className='password-input'
 						value={pswValue}
 						onChange={event => handleChangeLoginForm(event, 'pswValue', 'pswError')}
 						onBlur={event => handleCheckEmptyForm(event, 'pswValue', 'pswError')}
