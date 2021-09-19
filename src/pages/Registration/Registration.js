@@ -20,7 +20,7 @@ const Registration = () => {
 		repeatPswError: ''
 	});
 
-
+// если поле пустое, присваиваем название пусто соответствующей ошибке и возвр тру
 	const handleCheckEmptyInput = (signUpForm, signUpFormError, inputName, errorName) => {
 		if (signUpForm[inputName] === '') {
 			signUpFormError[errorName] = 'empty'
@@ -42,9 +42,6 @@ const Registration = () => {
 	// 		signUpFormError['repeatPswError'] = 'notMatch'
 	// 	}
 	// }
-
-
-
 
 
 	const handleCheckEmptyForm = (event = {}, inputName = '', errorName = '') => {
