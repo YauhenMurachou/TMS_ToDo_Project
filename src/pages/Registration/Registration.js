@@ -51,8 +51,10 @@ const Registration = () => {
 		const signUpFormCopy = { ...signUpForm };
 		const signUpFormErrorCopy = { ...signUpFormError };
 		let resultCheckEmpty = false;
+		let resultCheckEmptyUserName = false;
 		let resultCheckEmptyLogin = false;
 		let resultCheckEmptyPsw = false;
+		let resultCheckEmptyRepeatPsw = false;
 
 		if (inputName !== '' && errorName !== '') {
 			handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, inputName, errorName)
@@ -61,9 +63,11 @@ const Registration = () => {
 
 		} else {
 
-			resultCheckEmptyLogin = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'loginValue', 'usernameError', 'loginError')
-			resultCheckEmptyPsw = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'pswValue', 'pswError')
-			resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPsw
+			resultCheckEmptyUserName = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'userNameValue', 'userNameError');
+			resultCheckEmptyLogin = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'loginValue', 'loginError');
+			resultCheckEmptyPsw = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'pswValue', 'pswError');
+			resultCheckEmptyRepeatPsw = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'repeatPswValue', 'repeatPswError');
+			resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPsw || resultCheckEmptyUserName || resultCheckEmptyRepeatPsw;
 
 			setSignUpFormError(signUpFormErrorCopy)
 			return true
@@ -165,11 +169,11 @@ const Registration = () => {
 				</div>
 			</form>
 
-			<button className='registration-btn'>
-				<Link to={Routes.SignInRoute} >
+			<Link to={Routes.SignInRoute} >
+				<button className='registration-btn'>
 					<span>Back to login</span>
-				</Link>
-			</button>
+				</button>
+			</Link>
 		</div>
 	)
 };
