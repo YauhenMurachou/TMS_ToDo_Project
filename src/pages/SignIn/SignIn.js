@@ -122,12 +122,11 @@ const SignIn = () => {
 			</form>
 
 
-
-			<button className='registration-btn'>
-				<Link to={Routes.SignUpRoute} >
+			<Link to={Routes.SignUpRoute} >
+				<button className='registration-btn'>
 					<span>Go to registration</span>
-				</Link>
-			</button>
+				</button>
+			</Link>
 		</div>
 	)
 };
