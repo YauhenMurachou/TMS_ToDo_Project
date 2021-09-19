@@ -53,8 +53,8 @@ const Registration = () => {
 
 	const handleCheckValidPsw = (signUpFormError) => {
 		const pswRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/
-
-		if (pswRegex.test(pswValue) && pswValue !== '') {
+	
+		if (!pswRegex.test(pswValue) && pswValue !== '') {
 			signUpFormError['pswError'] = 'notValid'
 		}
 	}
@@ -131,7 +131,7 @@ const Registration = () => {
 				<div className='container'>
 					<label for='userNameValue'><b>Username</b></label>
 					<input type='text' placeholder='Enter username'
-						name='userNameValue' className='username-input'
+						name='userNameValue' className='registration-input'
 						value={userNameValue}
 						onChange={event => handleChangeSignUpForm(event, 'userNameValue', 'userNameError')}
 						onBlur={event => handleCheckEmptyFormSignUp(event, 'userNameValue', 'userNameError')}
@@ -154,7 +154,7 @@ const Registration = () => {
 
 					<label for='loginValue'><b>Login</b></label>
 					<input type='text' placeholder='Enter login'
-						name='loginValue' className='login-input'
+						name='loginValue' className='registration-input'
 						value={loginValue}
 						onChange={event => handleChangeSignUpForm(event, 'loginValue', 'loginError')}
 						onBlur={event => handleCheckEmptyFormSignUp(event, 'loginValue', 'loginError')}
@@ -177,7 +177,7 @@ const Registration = () => {
 
 					<label for='pswValue'><b>Password</b></label>
 					<input type='password' placeholder='Enter Password'
-						name='pswValue' className='password-input'
+						name='pswValue' className='registration-input'
 						value={pswValue}
 						onChange={event => handleChangeSignUpForm(event, 'pswValue', 'pswError')}
 						onBlur={event => handleCheckEmptyFormSignUp(event, 'pswValue', 'pswError')}
@@ -195,11 +195,11 @@ const Registration = () => {
 
 					<label for='psw-repeat'><b>Repeat password</b></label>
 					<input type='password' placeholder='Repeat Password'
-						name='repeatPswValue' className={pswValue === '' ? 'password-input disabled' : 'password-input'}
+						name='repeatPswValue' className={(pswValue === '' || pswError === 'notValid') ? 'registration-input disabled' : 'registration-input'}
 						value={repeatPswValue}
 						onChange={event => handleChangeSignUpForm(event, 'repeatPswValue', 'repeatPswError')}
 						onBlur={event => handleCheckEmptyFormSignUp(event, 'repeatPswValue', 'repeatPswError')}
-						disabled={pswValue === '' ? true : false}
+						disabled={pswValue === '' ? true : pswError === 'notValid' ? true : false}
 					/>
 
 					{
@@ -214,7 +214,7 @@ const Registration = () => {
 
 
 					<label for='select'><b>Select role</b></label>
-					<select name='select' className='password-input'
+					<select name='select' className='registration-input'
 						value={selectValue}
 						onChange={event => handleChangeSignUpForm(event, 'selectValue', 'selectError')}
 						onBlur={event => handleCheckEmptyFormSignUp(event, 'selectValue', 'selectError')}
@@ -227,23 +227,36 @@ const Registration = () => {
 
 					{
 						selectError === 'empty' &&
-						<div className='psw-error'>Please, select your role </div>
+						<div className='psw-error'> Please, select your role </div>
 					}
 
+					{selectValue === 'user' && (
+						<div>
+							<label for='select-admin'><b>Select administrator:</b></label>
+							<select
+								name='select-admin'
+								className='registration-input'
+							>
+								<option value='administrator' disabled>
+									Please, select administrator
+								</option>
+							</select>
+						</div>
+					)}
 
 					<button type='submit' className='sub-btn'>Sign Up</button>
 				</div>
 				<div className='form-or'>
 					or
 				</div>
-			</form>
+			</form >
 
 			<Link to={Routes.SignInRoute} >
 				<button className='registration-btn'>
 					<span>Back to login</span>
 				</button>
 			</Link>
-		</div>
+		</div >
 	)
 };
 
