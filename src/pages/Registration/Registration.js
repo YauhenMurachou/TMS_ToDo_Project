@@ -20,7 +20,10 @@ const Registration = () => {
 		repeatPswError: ''
 	});
 
-// если поле пустое, присваиваем название пусто соответствующей ошибке и возвр тру
+	const { userNameValue, loginValue, pswValue, repeatPswValue } = signUpForm;
+	const { userNameError, loginError, pswError, repeatPswError } = signUpFormError;
+
+	// если поле пустое, присваиваем название пусто соответствующей ошибке и возвр тру
 	const handleCheckEmptyInput = (signUpForm, signUpFormError, inputName, errorName) => {
 		if (signUpForm[inputName] === '') {
 			signUpFormError[errorName] = 'empty'
@@ -88,31 +91,27 @@ const Registration = () => {
 	}
 
 
-	const { loginValue, pswValue } = signUpForm;
-	const { loginError, usernameError, pswError } = signUpFormError;
-
-
 	return (
 		<div>
 			<form className='registr-form' onSubmit={handleSubmitForm}>
 
 				<div className='container'>
-					<label for='Username'><b>Username</b></label>
+					<label for='userNameValue'><b>Username</b></label>
 					<input type='text' placeholder='Enter username'
-						name='Username' className='username-input'
-						value={loginValue}
-						onChange={event => handleChangeSignUpForm(event, 'loginValue', 'usernameError')}
-						onBlur={event => handleCheckEmptyForm(event, 'loginValue', 'usernameError')}
+						name='userNameValue' className='username-input'
+						value={userNameValue}
+						onChange={event => handleChangeSignUpForm(event, 'userNameValue', 'userNameError')}
+						onBlur={event => handleCheckEmptyForm(event, 'userNameValue', 'userNameError')}
 					/>
 
 					{
-						usernameError === 'empty' &&
+						userNameError === 'empty' &&
 						<div className='login-error'>Please, enter username </div>
 					}
 
-					<label for='login'><b>Login</b></label>
+					<label for='loginValue'><b>Login</b></label>
 					<input type='text' placeholder='Enter login'
-						name='login' className='login-input'
+						name='loginValue' className='login-input'
 						value={loginValue}
 						onChange={event => handleChangeSignUpForm(event, 'loginValue', 'loginError')}
 						onBlur={event => handleCheckEmptyForm(event, 'loginValue', 'loginError')}
@@ -124,9 +123,9 @@ const Registration = () => {
 					}
 
 
-					<label for='psw'><b>Password</b></label>
+					<label for='pswValue'><b>Password</b></label>
 					<input type='password' placeholder='Enter Password'
-						name='psw' className='password-input'
+						name='pswValue' className='password-input'
 						value={pswValue}
 						onChange={event => handleChangeSignUpForm(event, 'pswValue', 'pswError')}
 						onBlur={event => handleCheckEmptyForm(event, 'pswValue', 'pswError')}
@@ -138,12 +137,17 @@ const Registration = () => {
 					}
 
 					<label for='psw-repeat'><b>Repeat password</b></label>
-					<input type='password' placeholder='Enter Password'
-						name='psw-repeat' className='password-input'
-						value={pswValue}
-						onChange={event => handleChangeSignUpForm(event, 'pswValue', 'pswError')}
-						onBlur={event => handleCheckEmptyForm(event, 'pswValue', 'pswError')}
+					<input type='password' placeholder='Repeat Password'
+						name='repeatPswValue' className='password-input'
+						value={repeatPswValue}
+						onChange={event => handleChangeSignUpForm(event, 'repeatPswValue', 'repeatPswError')}
+						onBlur={event => handleCheckEmptyForm(event, 'repeatPswValue', 'repeatPswError')}
 					/>
+
+					{
+						repeatPswError === 'empty' &&
+						<div className='psw-error'>Please, repeat password </div>
+					}
 
 
 					<label for='select'><b>Select role</b></label>
