@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../Registration/Registration.scss';
 
 import { Routes } from '../../utils/routes';
+import { signUpApi } from '../../api/signUpApi';
 
 const Registration = () => {
 
@@ -53,7 +54,7 @@ const Registration = () => {
 
 	const handleCheckValidPsw = (signUpFormError) => {
 		const pswRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/
-	
+
 		if (!pswRegex.test(pswValue) && pswValue !== '') {
 			signUpFormError['pswError'] = 'notValid'
 		}
