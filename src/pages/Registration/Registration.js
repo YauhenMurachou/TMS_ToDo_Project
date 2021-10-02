@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../Registration/Registration.scss';
 
+import { AuthInput, AuthSelect } from '../../components';
 import { Routes } from '../../utils/routes';
-import { signUpApi } from '../../api/signUpApi';
+import { authApi } from '../../api/authApi';
+import { usersApi } from '../../api/usersApi';
 
 const Registration = () => {
 
@@ -13,7 +15,8 @@ const Registration = () => {
 		loginValue: '',
 		pswValue: '',
 		repeatPswValue: '',
-		selectValue: ''
+		selectRoleValue: '',
+		selectAdminValue: ''
 	});
 
 	const [signUpFormError, setSignUpFormError] = useState({
@@ -21,11 +24,26 @@ const Registration = () => {
 		loginError: '',
 		pswError: '',
 		repeatPswError: '',
-		selectError: ''
+		selectRoleError: '',
+		selectAdminError: ''
 	});
 
-	const { userNameValue, loginValue, pswValue, repeatPswValue, selectValue } = signUpForm;
-	const { userNameError, loginError, pswError, repeatPswError, selectError } = signUpFormError;
+	const [admins, setAdmins] = useState([]);
+
+	useEffect(() => {
+		getAdminsList()
+	}, [])
+
+	const getAdminsList = () => {
+		usersApi.getAdmins()
+			.then(res => {
+				const adminsList = res.data
+				setAdmins(adminsList)
+			})
+	}
+
+	const { userNameValue, loginValue, pswValue, repeatPswValue, selectRoleValue, selectAdminValue } = signUpForm;
+	const { userNameError, loginError, pswError, repeatPswError, selectRoleError, selectAdminError } = signUpFormError;
 
 	// если поле пустое, присваиваем название пусто соответствующей ошибке и возвр тру
 	const handleCheckEmptyInput = (signUpForm, signUpFormError, inputName, errorName) => {
@@ -36,80 +54,137 @@ const Registration = () => {
 		return false
 	};
 
-	const handleCheckValidUserName = (signUpFormError) => {
-		const minLetters = /(?=(?:.*[a-zA-z]){3,})/
+	const handleCheckUserExists = async (fieldName, fieldValue) => {
+		const body = {};
+		body[fieldName] = fieldValue;
 
-		if (!minLetters.test(userNameValue) && userNameValue !== '') {
-			signUpFormError['userNameError'] = 'notValid'
+		return usersApi.checkUsersExist(body)
+	}
+
+	const handleCheckValidUserName = async (signUpFormErrorCopy) => {
+
+		const minLetters = /(?=(?:.*[a-zA-z]){5,})/
+		if (userNameValue !== '') {
+			if (!minLetters.test(userNameValue) && !(userNameValue.length >= 5)) {
+				signUpFormErrorCopy['userNameError'] = 'notValid'
+			} else {
+				const response = await handleCheckUserExists('userName', userNameValue)
+				const { data } = response
+				if (data.exists) {
+					signUpFormErrorCopy.userNameError = 'alreadyExist'
+				}
+			}
 		}
 	}
 
-	const handleCheckValidEmail = (signUpFormError) => {
+	const handleCheckValidEmail = async (signUpFormErrorCopy) => {
 		const mailRegex = /^\w+([\.-]?w+)*@\w+([\.-]?w+)*(\.\w{2,3})+$/
 
 		if (!mailRegex.test(loginValue) && loginValue !== '') {
-			signUpFormError['loginError'] = 'notValid'
+			signUpFormErrorCopy['loginError'] = 'notValid'
+		} else {
+
+			const response = await handleCheckUserExists('login', loginValue)
+			const { data } = response
+			if (data.exists) {
+				signUpFormErrorCopy.loginError = 'alreadyExist'
+			}
 		}
 	}
 
-	const handleCheckValidPsw = (signUpFormError) => {
+	const handleCheckValidPsw = (signUpFormErrorCopy) => {
 		const pswRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/
 
 		if (!pswRegex.test(pswValue) && pswValue !== '') {
-			signUpFormError['pswError'] = 'notValid'
+			signUpFormErrorCopy['pswError'] = 'notValid'
 		}
 	}
 
-	const handleCheckPswMatch = (signUpFormError) => {
+	const handleCheckPswMatch = (signUpFormErrorCopy) => {
 		if ((repeatPswValue !== pswValue) && (repeatPswValue !== '')) {
-			signUpFormError['repeatPswError'] = 'notMatch'
+			signUpFormErrorCopy['repeatPswError'] = 'notMatch'
 		}
 	}
 
+	const handleCheckValidInput = async (inputName, signUpFormErrorCopy) => {
 
-	const handleCheckEmptyFormSignUp = (event = {}, inputName = '', errorName = '') => {
+		if (inputName !== '') {
+			switch (inputName) {
+				case 'userNameValue':
+					await handleCheckValidUserName(signUpFormErrorCopy)
+					break
+
+				case 'loginValue':
+					await handleCheckValidEmail(signUpFormErrorCopy)
+					break
+
+				case 'pswValue':
+					handleCheckValidPsw(signUpFormErrorCopy)
+					break
+
+				case 'repeatPswValue':
+					handleCheckPswMatch(signUpFormErrorCopy)
+					break
+			}
+		}
+	}
+
+	const handleCheckEmptyFormSignUp = async (event = {}, inputName = '', errorName = '') => {
 		const signUpFormCopy = { ...signUpForm };
 		const signUpFormErrorCopy = { ...signUpFormError };
 
 		let resultCheckEmpty = false;
-		let resultCheckEmptyUserName = false;
-		let resultCheckEmptyLogin = false;
-		let resultCheckEmptyPsw = false;
-		let resultCheckEmptyRepeatPsw = false;
-		let resultCheckEmptySelect = false;
 
-		handleCheckValidUserName(signUpFormErrorCopy);
-		handleCheckValidEmail(signUpFormErrorCopy);
-		handleCheckValidPsw(signUpFormErrorCopy);
-		handleCheckPswMatch(signUpFormErrorCopy);
+		await handleCheckValidInput(inputName, signUpFormErrorCopy);
 
 		if (inputName !== '' && errorName !== '') {
 			handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, inputName, errorName)
 			setSignUpFormError(signUpFormErrorCopy)
-			return true
+			// return true
 
 		} else {
 
-			resultCheckEmptyUserName = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'userNameValue', 'userNameError');
-			resultCheckEmptyLogin = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'loginValue', 'loginError');
-			resultCheckEmptyPsw = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'pswValue', 'pswError');
-			resultCheckEmptyRepeatPsw = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'repeatPswValue', 'repeatPswError');
-			resultCheckEmptySelect = handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, 'selectValue', 'selectError');
+			const valuesNameForm = Object.keys(signUpFormCopy);
+			const errorsNameForm = Object.keys(signUpFormErrorCopy);
 
-			resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPsw || resultCheckEmptyUserName || resultCheckEmptyRepeatPsw;
+			if (selectRoleValue === 'admin') {
+				valuesNameForm.pop()
+				errorsNameForm.pop()
+			}
+
+			const checkEmptyArray = Array(valuesNameForm.length).fill(false);
+
+			for (let i = 0; i < valuesNameForm.length; i++) {
+				checkEmptyArray[i] = handleCheckEmptyInput(
+					signUpFormCopy,
+					signUpFormErrorCopy,
+					valuesNameForm[i],
+					errorsNameForm[i]
+				)
+			}
+			resultCheckEmpty = checkEmptyArray.some(check => check === true)
 
 			setSignUpFormError(signUpFormErrorCopy)
-			return true
 		}
 		return resultCheckEmpty
 	}
 
+	const handleChangeRole = (event, inputName, errorName) => {
+		const { value } = event.target
+		const signUpFormErrorCopy = { ...signUpFormError }
+		const signUpFormCopy = { ...signUpForm }
+		if (value === 'admin') {
+			signUpFormErrorCopy['selectAdminError'] = ''
+			signUpFormCopy['selectAdminValue'] = ''
+		}
 
+		handleChangeSignUpForm(event, inputName, errorName, signUpFormCopy, signUpFormErrorCopy)
+	}
 
-	const handleChangeSignUpForm = (event, inputName, errorName) => {
+	const handleChangeSignUpForm = (event, inputName, errorName, signUpFormCopyArg = undefined, signUpFormErrorCopyArg = undefined) => {
 
-		const signUpFormCopy = { ...signUpForm };
-		const signUpFormErrorCopy = { ...signUpFormError };
+		const signUpFormCopy = signUpFormCopyArg || { ...signUpForm };
+		const signUpFormErrorCopy = signUpFormErrorCopyArg || { ...signUpFormError };
 		const { value: inputValue } = event.target;
 		signUpFormErrorCopy[errorName] = '';
 		setSignUpFormError(signUpFormErrorCopy);
@@ -117,135 +192,160 @@ const Registration = () => {
 		setSignUpForm(signUpFormCopy);
 	};
 
-	const handleSubmitForm = (event) => {
+	const handleSubmitForm = async (event) => {
+
 		event.preventDefault()
-		if (handleCheckEmptyFormSignUp()) {
+		const isFormValid = await handleCheckEmptyFormSignUp()
+		if (isFormValid) {
 			return
 		}
+
+		let newUser = {
+			userName: userNameValue,
+			login: loginValue,
+			password: pswValue,
+			role: selectRoleValue
+		}
+		if (selectRoleValue === 'user') {
+			newUser.adminId = selectAdminValue
+		}
+
+		const response2 = await authApi.signUpUser(newUser)
+		console.log('response', response2)
 	}
 
+	const roleSelectOption = () => {
+		return (
+			<>
+				<option value="user">User</option>
+				<option value="admin">Admin</option>
+			</>
+		)
+	}
+
+	const adminSelectOption = (admins) => {
+		return (
+			<>{
+				admins.map(admin => {
+					const { _id, userName, login } = admin
+					return <option value={_id}>`${userName}, ${login}`</option>
+				})
+			}</>
+		)
+	}
 
 	return (
 		<div>
 			<form className='registr-form' onSubmit={handleSubmitForm}>
 
 				<div className='container'>
-					<label for='userNameValue'><b>Username</b></label>
-					<input type='text' placeholder='Enter username'
-						name='userNameValue' className='registration-input'
-						value={userNameValue}
-						onChange={event => handleChangeSignUpForm(event, 'userNameValue', 'userNameError')}
-						onBlur={event => handleCheckEmptyFormSignUp(event, 'userNameValue', 'userNameError')}
+
+					<AuthInput
+						inputTitle='Username'
+						inputType='text'
+						disabled={false}
+						inputPlaceholder='Enter username'
+						inputError={userNameError}
+						inputErrorName='userNameError'
+						inputValue={userNameValue}
+						inputValueName='userNameValue'
+						inputName='userNameValue'
+						emptyValidationText='Please, enter username'
+						invalidValidationText=' Username format is not correct'
+						existsValidationText='This username already exists'
+						matchValidationText=''
+						handleChangeForm={handleChangeSignUpForm}
+						handleCheckValidForm={handleCheckEmptyFormSignUp}
 					/>
 
-					{
-						userNameError === 'empty' &&
-						<div className='login-error'>Please, enter username </div>
-					}
-
-					{
-						userNameError === 'notValid' &&
-						<div className='login-error'>Username format is not correct </div>
-					}
-
-					{
-						userNameError === 'alreadyExist' &&
-						<div className='login-error'>This username already taken </div>
-					}
-
-					<label for='loginValue'><b>Login</b></label>
-					<input type='text' placeholder='Enter login'
-						name='loginValue' className='registration-input'
-						value={loginValue}
-						onChange={event => handleChangeSignUpForm(event, 'loginValue', 'loginError')}
-						onBlur={event => handleCheckEmptyFormSignUp(event, 'loginValue', 'loginError')}
+					<AuthInput
+						inputTitle='Login'
+						inputType='text'
+						disabled={false}
+						inputPlaceholder='Enter login'
+						inputError={loginError}
+						inputErrorName='loginError'
+						inputValue={loginValue}
+						inputValueName='loginValue'
+						inputName='loginValue'
+						emptyValidationText='Please, enter login'
+						invalidValidationText=' Login format is not correct'
+						existsValidationText='This login already exists'
+						matchValidationText=''
+						handleChangeForm={handleChangeSignUpForm}
+						handleCheckValidForm={handleCheckEmptyFormSignUp}
 					/>
 
-					{
-						loginError === 'empty' &&
-						<div className='login-error'>Please, enter login </div>
-					}
-					{
-						loginError === 'notValid' &&
-						<div className='login-error'>Login format is not correct </div>
-					}
-
-					{
-						loginError === 'alreadyExist' &&
-						<div className='login-error'>This login already taken </div>
-					}
-
-
-					<label for='pswValue'><b>Password</b></label>
-					<input type='password' placeholder='Enter Password'
-						name='pswValue' className='registration-input'
-						value={pswValue}
-						onChange={event => handleChangeSignUpForm(event, 'pswValue', 'pswError')}
-						onBlur={event => handleCheckEmptyFormSignUp(event, 'pswValue', 'pswError')}
+					<AuthInput
+						inputTitle='Password'
+						inputType='password'
+						disabled={false}
+						inputPlaceholder='Enter password'
+						inputError={pswError}
+						inputErrorName='pswError'
+						inputValue={pswValue}
+						inputValueName='pswValue'
+						inputName='pswValue'
+						emptyValidationText='Please, enter password'
+						invalidValidationText='Password must contain at least 5 characters, including 1 number and 1 letter'
+						existsValidationText=''
+						matchValidationText=''
+						handleChangeForm={handleChangeSignUpForm}
+						handleCheckValidForm={handleCheckEmptyFormSignUp}
 					/>
 
-					{
-						pswError === 'empty' &&
-						<div className='psw-error'>Please, enter password </div>
-					}
-
-					{
-						pswError === 'notValid' &&
-						<div className='psw-error'>Password must contain at least 5 characters, including 1 number and 1 letter</div>
-					}
-
-					<label for='psw-repeat'><b>Repeat password</b></label>
-					<input type='password' placeholder='Repeat Password'
-						name='repeatPswValue' className={(pswValue === '' || pswError === 'notValid') ? 'registration-input disabled' : 'registration-input'}
-						value={repeatPswValue}
-						onChange={event => handleChangeSignUpForm(event, 'repeatPswValue', 'repeatPswError')}
-						onBlur={event => handleCheckEmptyFormSignUp(event, 'repeatPswValue', 'repeatPswError')}
+					<AuthInput
+						inputTitle='Repeat password'
+						inputType='password'
 						disabled={pswValue === '' ? true : pswError === 'notValid' ? true : false}
+						inputPlaceholder='Repeat password'
+						inputError={repeatPswError}
+						inputErrorName='repeatPswError'
+						inputValue={repeatPswValue}
+						inputValueName='repeatPswValue'
+						inputName='repeatPswValue'
+						emptyValidationText='Please, repeat password'
+						invalidValidationText=''
+						existsValidationText=''
+						matchValidationText='Password mismatch'
+						handleChangeForm={handleChangeSignUpForm}
+						handleCheckValidForm={handleCheckEmptyFormSignUp}
+					/>
+
+
+
+					<AuthSelect
+						inputTitle='Select your role:'
+						inputError={selectRoleError}
+						inputErrorName='selectRoleError'
+						inputValue={selectRoleValue}
+						inputValueName='selectRoleValue'
+						// defaultValueText=''
+						childOptions={roleSelectOption()}
+						emptyValidationText='Please, select your role'
+						handleChangeForm={handleChangeRole}
+						handleCheckValidForm={handleCheckEmptyFormSignUp}
 					/>
 
 					{
-						repeatPswError === 'empty' &&
-						<div className='psw-error'>Please, repeat password </div>
+						selectRoleValue === 'user' && (
+
+							<AuthSelect
+								inputTitle='Select administrator:'
+								inputError={selectAdminError}
+								inputErrorName='selectAdminError'
+								inputValue={selectAdminValue}
+								inputValueName='selectAdminValue'
+								defaultValueText='Please, select administrator'
+								childOptions={adminSelectOption(admins)}
+								emptyValidationText='Please, select your admin'
+								handleChangeForm={handleChangeSignUpForm}
+								handleCheckValidForm={handleCheckEmptyFormSignUp}
+							/>
+						)
 					}
 
-					{
-						repeatPswError === 'notMatch' &&
-						<div className='psw-error'>Password mismatch</div>
-					}
-
-
-					<label for='select'><b>Select role</b></label>
-					<select name='select' className='registration-input'
-						value={selectValue}
-						onChange={event => handleChangeSignUpForm(event, 'selectValue', 'selectError')}
-						onBlur={event => handleCheckEmptyFormSignUp(event, 'selectValue', 'selectError')}
-					>
-
-						<option></option>
-						<option value="user">User</option>
-						<option value="admin">Admin</option>
-					</select>
-
-					{
-						selectError === 'empty' &&
-						<div className='psw-error'> Please, select your role </div>
-					}
-
-					{selectValue === 'user' && (
-						<div>
-							<label for='select-admin'><b>Select administrator:</b></label>
-							<select
-								name='select-admin'
-								className='registration-input'
-							>
-								<option value='administrator' disabled>
-									Please, select administrator
-								</option>
-							</select>
-						</div>
-					)}
-
-					<button type='submit' className='sub-btn'>Sign Up</button>
+					<input type='submit' value='Sign Up' className='sub-btn' />
 				</div>
 				<div className='form-or'>
 					or
@@ -259,6 +359,6 @@ const Registration = () => {
 			</Link>
 		</div >
 	)
-};
+}
 
 export default Registration;

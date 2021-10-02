@@ -1,13 +1,30 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Routes } from '../../utils/routes';
 
-import '../SignIn/SignIn.scss'
+import '../SignIn/SignIn.scss';
+
+import { authApi } from "../../api/authApi";
+import { Routes } from '../../utils/routes';
 
 const SignIn = () => {
 
-	const [loginForm, setLoginForm] = useState({ loginValue: '', pswValue: '' });
-	const [loginFormError, setLoginFormError] = useState({ loginError: '', pswError: '' });
+	const [loginForm, setLoginForm] = useState({ userNameValue: '', pswValue: '' });
+	const [loginFormError, setLoginFormError] = useState({ userNameError: '', pswError: '' });
+
+	const { userNameValue, pswValue } = loginForm;
+	const { userNameError, pswError } = loginFormError;
+
+	const handleChangeLoginForm = (event, inputName, errorName) => {
+		const loginFormCopy = { ...loginForm };
+		const loginFormErrorCopy = { ...loginFormError };
+
+		const { value: inputValue } = event.target;
+		loginFormErrorCopy[errorName] = '';
+		setLoginFormError(loginFormErrorCopy);
+
+		loginFormCopy[inputName] = inputValue;
+		setLoginForm(loginFormCopy);
+	}
 
 	const handleCheckEmptyInput = (loginForm, loginFormError, inputName, errorName) => {
 		if (loginForm[inputName] === '') {
@@ -20,49 +37,59 @@ const SignIn = () => {
 	const handleCheckEmptyForm = (event = {}, inputName = '', errorName = '') => {
 		const loginFormCopy = { ...loginForm };
 		const loginFormErrorCopy = { ...loginFormError };
+
 		let resultCheckEmpty = false;
 		let resultCheckEmptyLogin = false;
 		let resultCheckEmptyPsw = false;
 
 		if (inputName !== '' && errorName !== '') {
-			handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, inputName, errorName)
-			setLoginFormError(loginFormErrorCopy)
-			return true
+			resultCheckEmpty = handleCheckEmptyInput(
+				loginFormCopy,
+				loginFormErrorCopy,
+				inputName,
+				errorName
+			)
 
+			setLoginFormError(loginFormErrorCopy)
+	
 		} else {
 
-			resultCheckEmptyLogin = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'loginValue', 'loginError')
+			resultCheckEmptyLogin = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'userNameValue', 'userNameError')
 			resultCheckEmptyPsw = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'pswValue', 'pswError')
 			resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPsw
 
 			setLoginFormError(loginFormErrorCopy)
-			return true
-		}
+			}
 		return resultCheckEmpty
 	}
 
 
-
-	const handleChangeLoginForm = (event, inputName, errorName) => {
-		const loginFormCopy = { ...loginForm };
-		const loginFormErrorCopy = { ...loginFormError };
-		const { value: inputValue } = event.target;
-		loginFormErrorCopy[errorName] = '';
-		setLoginFormError(loginFormErrorCopy);
-		loginFormCopy[inputName] = inputValue;
-		setLoginForm(loginFormCopy);
-	};
-
-	const handleSubmitForm = (event) => {
+	const handleSubmitForm = async (event) => {
 		event.preventDefault()
+
 		if (handleCheckEmptyForm()) {
 			return
 		}
+		const user = {
+			userName: userNameValue,
+			password: pswValue
+		}
+		try {
+			const res = await authApi.signInUser(user)
+		} catch (error) {
+			console.log('error', error.response.data.message)
+
+			const loginFormErrorCopy = { ...loginFormError };
+			const errorMessage = error.response.data.message
+
+			if (errorMessage === 'No user with such userName') {
+				loginFormErrorCopy['userNameError'] = 'notExists'
+			} else if (errorMessage === 'Passwords did not match') {
+				loginFormErrorCopy['pswError'] = 'notValid'
+			}
+			setLoginFormError(loginFormErrorCopy)
+		}
 	}
-
-
-	const { loginValue, pswValue } = loginForm;
-	const { loginError, pswError } = loginFormError;
 
 
 	return (
@@ -77,15 +104,19 @@ const SignIn = () => {
 					<label for='login'><b>Username</b></label>
 					<input type='text' placeholder='Enter username'
 						name='login' className='login-input'
-						value={loginValue}
-						onChange={event => handleChangeLoginForm(event, 'loginValue', 'loginError')}
-						onBlur={event => handleCheckEmptyForm(event, 'loginValue', 'loginError')}
+						value={userNameValue}
+						onChange={event => handleChangeLoginForm(event, 'userNameValue', 'userNameError')}
+						onBlur={event => handleCheckEmptyForm(event, 'userNameValue', 'userNameError')}
 					/>
 
 					{
-						loginError === 'empty' &&
+						userNameError === 'empty' &&
 						<div className='login-error'>Please, enter username </div>
 					}
+
+					{
+						userNameError === 'notExists' &&
+						<div className='login-error'>There is no user with this username</div>}
 
 					<label for='psw'><b>Password</b></label>
 					<input type='password' placeholder='Enter Password'
@@ -99,6 +130,10 @@ const SignIn = () => {
 						pswError === 'empty' &&
 						<div className='psw-error'>Please, enter password </div>
 					}
+
+					{
+						pswError === 'notValid' &&
+						<div className='psw-error'>Wrong password</div>}
 
 					<button type='submit' className='sub-btn'>Sign In</button>
 				</div>
