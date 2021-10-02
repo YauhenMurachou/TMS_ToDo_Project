@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import '../SignIn/SignIn.scss';
 
+import { AuthInput } from '../../components';
 import { authApi } from "../../api/authApi";
 import { Routes } from '../../utils/routes';
 
@@ -51,7 +52,7 @@ const SignIn = () => {
 			)
 
 			setLoginFormError(loginFormErrorCopy)
-	
+
 		} else {
 
 			resultCheckEmptyLogin = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'userNameValue', 'userNameError')
@@ -59,7 +60,7 @@ const SignIn = () => {
 			resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPsw
 
 			setLoginFormError(loginFormErrorCopy)
-			}
+		}
 		return resultCheckEmpty
 	}
 
@@ -101,39 +102,44 @@ const SignIn = () => {
 				</div>
 
 				<div className='container'>
-					<label for='login'><b>Username</b></label>
-					<input type='text' placeholder='Enter username'
-						name='login' className='login-input'
-						value={userNameValue}
-						onChange={event => handleChangeLoginForm(event, 'userNameValue', 'userNameError')}
-						onBlur={event => handleCheckEmptyForm(event, 'userNameValue', 'userNameError')}
+
+					<AuthInput
+						inputTitle='Username:'
+						inputType='text'
+						disabled={false}
+						inputPlaceholder='Enter username'
+						inputError={userNameError}
+						inputErrorName='userNameError'
+						inputValue={userNameValue}
+						inputValueName='userNameValue'
+						inputName='userNameValue'
+						emptyValidationText='Please, enter username'
+						invalidValidationText=''
+						existsValidationText=''
+						notExistsValidationText='There is no user with this username'
+						matchValidationText=''
+						handleChangeForm={handleChangeLoginForm}
+						handleCheckValidForm={handleCheckEmptyForm}
 					/>
 
-					{
-						userNameError === 'empty' &&
-						<div className='login-error'>Please, enter username </div>
-					}
-
-					{
-						userNameError === 'notExists' &&
-						<div className='login-error'>There is no user with this username</div>}
-
-					<label for='psw'><b>Password</b></label>
-					<input type='password' placeholder='Enter Password'
-						name='psw' className='password-input'
-						value={pswValue}
-						onChange={event => handleChangeLoginForm(event, 'pswValue', 'pswError')}
-						onBlur={event => handleCheckEmptyForm(event, 'pswValue', 'pswError')}
+					<AuthInput
+						inputTitle='Password:'
+						inputType='password'
+						disabled={false}
+						inputPlaceholder='Enter password'
+						inputError={pswError}
+						inputErrorName='pswError'
+						inputValue={pswValue}
+						inputValueName='pswValue'
+						inputName='pswValue'
+						emptyValidationText='Please, enter password'
+						invalidValidationText='Wrong password'
+						existsValidationText=''
+						notExistsValidationText=''
+						matchValidationText=''
+						handleChangeForm={handleChangeLoginForm}
+						handleCheckValidForm={handleCheckEmptyForm}
 					/>
-
-					{
-						pswError === 'empty' &&
-						<div className='psw-error'>Please, enter password </div>
-					}
-
-					{
-						pswError === 'notValid' &&
-						<div className='psw-error'>Wrong password</div>}
 
 					<button type='submit' className='sub-btn'>Sign In</button>
 				</div>
@@ -143,12 +149,11 @@ const SignIn = () => {
 			</form>
 
 
-
-			<button className='registration-btn'>
-				<Link to={Routes.SignUpRoute} >
+			<Link to={Routes.SignUpRoute} >
+				<button className='registration-btn'>
 					<span>Go to registration</span>
-				</Link>
-			</button>
+				</button>
+			</Link>
 		</div>
 	)
 };

@@ -241,7 +241,7 @@ const Registration = () => {
 				<div className='container'>
 
 					<AuthInput
-						inputTitle='Username'
+						inputTitle='Username:'
 						inputType='text'
 						disabled={false}
 						inputPlaceholder='Enter username'
@@ -259,7 +259,7 @@ const Registration = () => {
 					/>
 
 					<AuthInput
-						inputTitle='Login'
+						inputTitle='Login:'
 						inputType='text'
 						disabled={false}
 						inputPlaceholder='Enter login'
@@ -277,7 +277,7 @@ const Registration = () => {
 					/>
 
 					<AuthInput
-						inputTitle='Password'
+						inputTitle='Password:'
 						inputType='password'
 						disabled={false}
 						inputPlaceholder='Enter password'
@@ -295,7 +295,7 @@ const Registration = () => {
 					/>
 
 					<AuthInput
-						inputTitle='Repeat password'
+						inputTitle='Repeat password:'
 						inputType='password'
 						disabled={pswValue === '' ? true : pswError === 'notValid' ? true : false}
 						inputPlaceholder='Repeat password'

@@ -17,11 +17,12 @@ export const AuthInput = ({
 	invalidValidationText,
 	existsValidationText,
 	matchValidationText,
+	notExistsValidationText,
 	handleChangeForm,
 	handleCheckValidForm }) => {
-		
+
 	return (
-		<div>
+		<div className='input-wrapper'>
 			<label for='inputName'><b>{inputTitle}</b></label>
 			<input type={inputType} placeholder={inputPlaceholder}
 				name={inputName} className='registration-input'
@@ -46,6 +47,11 @@ export const AuthInput = ({
 			{
 				inputError === 'notMatch' &&
 				<div className='psw-error'>{matchValidationText}</div>
+			}
+
+			{
+				inputError === 'notExists' &&
+				<div className='login-error'>{notExistsValidationText}</div>
 			}
 		</div>
 	)

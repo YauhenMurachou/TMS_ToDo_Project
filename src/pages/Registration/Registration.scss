@@ -1,7 +1,7 @@
 .registr-form {
 	border: 3px solid #f1f1f1;
 	max-width: 400px;
-	margin: 0 auto 15px auto;
+	margin: 0 auto 0 auto;
 
 	.imgcontainer {
 		text-align: center;
@@ -40,11 +40,12 @@
 		label {
 			font-size: 24px;
 		}
-
+.input-wrapper{
+	margin-top: 10px;
+}
 		.registration-input {
 			width: 100%;
 			padding: 12px 20px;
-			margin: 0 0 15px 0;
 			display: inline-block;
 			border: 1px solid #ccc;
 			box-sizing: border-box;
@@ -81,7 +82,7 @@
 }
 
 .registration-btn {
-	margin: 0 auto;
+	margin: 15px auto 0 auto;
 	display: block;
 	background-color: rgb(85, 101, 240);
 	border: none;

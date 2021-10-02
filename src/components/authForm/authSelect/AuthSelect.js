@@ -17,7 +17,7 @@ export const AuthSelect = ({
 
 	return (
 		<>
-			<div>
+			<div className='input-wrapper'>
 				<label for='select-admin'><b>{inputTitle}</b></label>
 
 				<select name={inputValueName} className='registration-input'
