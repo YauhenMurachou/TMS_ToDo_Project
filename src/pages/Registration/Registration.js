@@ -312,8 +312,6 @@ const Registration = () => {
 						handleCheckValidForm={handleCheckEmptyFormSignUp}
 					/>
 
-
-
 					<AuthSelect
 						inputTitle='Select your role:'
 						inputError={selectRoleError}
@@ -347,16 +345,18 @@ const Registration = () => {
 
 					<input type='submit' value='Sign Up' className='sub-btn' />
 				</div>
-				<div className='form-or'>
-					or
-				</div>
-			</form >
 
-			<Link to={Routes.SignInRoute} >
-				<button className='registration-btn'>
-					<span>Back to login</span>
-				</button>
-			</Link>
+				<div className='form-or'>
+					Already have an account?
+				</div>
+
+				<Link to={Routes.SignInRoute} >
+					<button className='registration-btn'>
+						<span>Sign In</span>
+					</button>
+				</Link>
+
+			</form >
 		</div >
 	)
 }

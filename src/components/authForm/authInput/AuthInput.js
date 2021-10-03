@@ -3,7 +3,7 @@ import React from "react";
 import './AuthInput.scss';
 
 
-export const AuthInput = ({
+const AuthInput = ({
 	inputTitle,
 	inputType,
 	disabled,

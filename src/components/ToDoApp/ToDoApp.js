@@ -45,6 +45,7 @@ function ToDoApp() {
 	}
 
 	const removeTask = (id) => {
+		// console.log('delete task')
 		let newItems = items.slice();
 		const delId = newItems.findIndex((n) => n.id === id);
 		newItems.splice(delId, 1);
@@ -114,10 +115,12 @@ function ToDoApp() {
 	}
 
 
-	const renderTasks = (arr) => {
+	const renderTasks = (arr) => {		
 		return (
+			
 			<ul>
 				{arr.map((item) => (
+					
 					<ToDoList
 						key={item.id}
 						item={item}

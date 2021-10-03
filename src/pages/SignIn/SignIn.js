@@ -141,19 +141,21 @@ const SignIn = () => {
 						handleCheckValidForm={handleCheckEmptyForm}
 					/>
 
-					<button type='submit' className='sub-btn'>Sign In</button>
+					{/* <Link to={Routes.TasksRoute} > */}
+						<button type='submit' className='sub-btn'>Sign In</button>
+					{/* </Link> */}
 				</div>
+
 				<div className='form-or'>
-					or
+					Don't have an account?
 				</div>
+
+				<Link to={Routes.SignUpRoute} >
+					<button className='registration-btn'>
+						<span>Go to registration</span>
+					</button>
+				</Link>
 			</form>
-
-
-			<Link to={Routes.SignUpRoute} >
-				<button className='registration-btn'>
-					<span>Go to registration</span>
-				</button>
-			</Link>
 		</div>
 	)
 };

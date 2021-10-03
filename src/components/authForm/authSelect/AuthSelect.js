@@ -2,7 +2,7 @@ import React from "react";
 
 import { AuthInput } from "../authInput/AuthInput";
 
-export const AuthSelect = ({
+const AuthSelect = ({
 	inputTitle,
 	inputError,
 	inputErrorName,

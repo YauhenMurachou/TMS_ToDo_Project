@@ -22,17 +22,22 @@ const App = () => {
 				<Home />
 			</Route>
 
-			<NotAuthorizedRoute exact path={Routes.SignInRoute} component={SignIn} />
+			<NotAuthorizedRoute exact path={Routes.SignInRoute}
+				component={SignIn} />
 
-			<NotAuthorizedRoute exact path={Routes.SignUpRoute} component={Registration} />
+			<NotAuthorizedRoute exact path={Routes.SignUpRoute}
+				component={Registration} />
 
-			<AuthorizedRoute exact path={Routes.TasksRoute} component={Tasks} />
+			<AuthorizedRoute exact path={Routes.TasksRoute}
+				isAutorized={true}
+				component={Tasks} />
 
-			<AuthorizedRoute exact path={Routes.UsersRoute} component={Users} />
+			<AuthorizedRoute exact path={Routes.UsersRoute}
+				isAutorized={false}
+				component={Users} />
 
 		</Router>
 	)
 };
-
 
 export default App;
