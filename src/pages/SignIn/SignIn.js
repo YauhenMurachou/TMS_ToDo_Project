@@ -1,13 +1,20 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import '../SignIn/SignIn.scss';
 
 import { AuthInput } from '../../components';
-import { authApi } from "../../api/authApi";
+import { authApi } from '../../api/authApi';
 import { Routes } from '../../utils/routes';
+import { linkToRoute } from '../../utils/routes';
+import { signIn } from '../../redux/actions/toDoAppActions';
+import { setCookie } from '../../utils/getCookies';
 
 const SignIn = () => {
+
+	const history = useHistory()
+	const dispatch = useDispatch()
 
 	const [loginForm, setLoginForm] = useState({ userNameValue: '', pswValue: '' });
 	const [loginFormError, setLoginFormError] = useState({ userNameError: '', pswError: '' });
@@ -66,6 +73,7 @@ const SignIn = () => {
 
 
 	const handleSubmitForm = async (event) => {
+
 		event.preventDefault()
 
 		if (handleCheckEmptyForm()) {
@@ -77,9 +85,24 @@ const SignIn = () => {
 		}
 		try {
 			const res = await authApi.signInUser(user)
-		} catch (error) {
-			console.log('error', error.response.data.message)
 
+			const { token, role } = res.data
+
+			// document.cookie = 'authorization' + '=' + token
+			// document.cookie = 'role' + '=' + role
+
+			setCookie('authorization', token)
+			setCookie('role', role)
+
+			dispatch(signIn({ role, token }))
+
+			if (res.data.role === 'admin') {
+				linkToRoute(history, Routes.UsersRoute)
+			} else {
+				linkToRoute(history, Routes.TasksRoute)
+			}
+
+		} catch (error) {
 			const loginFormErrorCopy = { ...loginFormError };
 			const errorMessage = error.response.data.message
 
@@ -142,7 +165,7 @@ const SignIn = () => {
 					/>
 
 					{/* <Link to={Routes.TasksRoute} > */}
-						<button type='submit' className='sub-btn'>Sign In</button>
+					<button type='submit' className='sub-btn'>Sign In</button>
 					{/* </Link> */}
 				</div>
 
