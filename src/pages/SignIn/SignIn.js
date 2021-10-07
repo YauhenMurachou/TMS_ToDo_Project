@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Jwt } from 'jsonwebtoken';
+import Jwt  from 'jsonwebtoken';
 
 import '../SignIn/SignIn.scss';
 
@@ -87,14 +87,14 @@ const SignIn = () => {
 		
 			const res = await authApi.signInUser(user)
 
-			const { token, role } = res.data
+			const { token } = res.data
 
 			// document.cookie = 'authorization' + '=' + token
 			// document.cookie = 'role' + '=' + role
 
 			setCookie('authorization', token)
 
-			const decodedData = jwt.decode(token)
+			const decodedData = Jwt.decode(token)
 			const{ role, id: userId } = decodedData
 
 			// setCookie('role', role)

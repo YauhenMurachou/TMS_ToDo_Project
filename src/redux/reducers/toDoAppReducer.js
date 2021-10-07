@@ -1,7 +1,9 @@
 import { getCookie } from "../../utils/getCookies";
+import Jwt from "jsonwebtoken";
+
 
 	const token = getCookie('authorization')
-	const decodedData = jwt.decode(token)
+	const decodedData = Jwt.decode(token) || {role: '', id: ''}
 	const { role, id: userId } = decodedData
 
 const initialState = { token,	role, userId }
