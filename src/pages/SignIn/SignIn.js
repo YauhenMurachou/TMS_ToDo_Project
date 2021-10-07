@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Jwt } from 'jsonwebtoken';
 
 import '../SignIn/SignIn.scss';
 
@@ -73,7 +74,7 @@ const SignIn = () => {
 
 
 	const handleSubmitForm = async (event) => {
-
+		try {
 		event.preventDefault()
 
 		if (handleCheckEmptyForm()) {
@@ -83,7 +84,7 @@ const SignIn = () => {
 			userName: userNameValue,
 			password: pswValue
 		}
-		try {
+		
 			const res = await authApi.signInUser(user)
 
 			const { token, role } = res.data
@@ -92,9 +93,13 @@ const SignIn = () => {
 			// document.cookie = 'role' + '=' + role
 
 			setCookie('authorization', token)
-			setCookie('role', role)
 
-			dispatch(signIn({ role, token }))
+			const decodedData = jwt.decode(token)
+			const{ role, id: userId } = decodedData
+
+			// setCookie('role', role)
+
+			dispatch(signIn({ role, token, userId }))
 
 			if (res.data.role === 'admin') {
 				linkToRoute(history, Routes.UsersRoute)
