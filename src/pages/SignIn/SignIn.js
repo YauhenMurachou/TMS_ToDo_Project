@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Jwt  from 'jsonwebtoken';
+import Jwt from 'jsonwebtoken';
 
 import '../SignIn/SignIn.scss';
 
@@ -75,39 +75,34 @@ const SignIn = () => {
 
 	const handleSubmitForm = async (event) => {
 		try {
-		event.preventDefault()
+			event.preventDefault()
+			if (handleCheckEmptyForm()) {
+				return
+			}
+			const user = {
+				userName: userNameValue,
+				password: pswValue
+			}
 
-		if (handleCheckEmptyForm()) {
-			return
-		}
-		const user = {
-			userName: userNameValue,
-			password: pswValue
-		}
-		
 			const res = await authApi.signInUser(user)
-
 			const { token } = res.data
-
-			// document.cookie = 'authorization' + '=' + token
-			// document.cookie = 'role' + '=' + role
 
 			setCookie('authorization', token)
 
 			const decodedData = Jwt.decode(token)
-			const{ role, id: userId } = decodedData
-
-			// setCookie('role', role)
-
+			const { role, id: userId } = decodedData
+			
 			dispatch(signIn({ role, token, userId }))
 
-			if (res.data.role === 'admin') {
+			if (role === 'admin') {
 				linkToRoute(history, Routes.UsersRoute)
 			} else {
 				linkToRoute(history, Routes.TasksRoute)
 			}
 
 		} catch (error) {
+			console.log('why dont go', error)
+
 			const loginFormErrorCopy = { ...loginFormError };
 			const errorMessage = error.response.data.message
 
@@ -169,9 +164,8 @@ const SignIn = () => {
 						handleCheckValidForm={handleCheckEmptyForm}
 					/>
 
-					{/* <Link to={Routes.TasksRoute} > */}
 					<button type='submit' className='sub-btn'>Sign In</button>
-					{/* </Link> */}
+
 				</div>
 
 				<div className='form-or'>

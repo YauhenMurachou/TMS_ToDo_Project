@@ -5,7 +5,6 @@ export const restoreAuth = data => {
 	}
 }
 
-
 export const signIn = data => {
 	return {
 		type: 'SIGN_IN',
@@ -13,51 +12,51 @@ export const signIn = data => {
 	}
 }
 
+export const addUsersSearchList = data => {
+	return {
+		type: 'ADD_USERS_SEARCH_LIST',
+		payload: data
+	}
+}
 
-// export const deleteEl = data => {
-// 	return {
-// 		type: 'DELETE_EL',
-// 		payload: data
-// 	}
-// }
+export const addTasksList = data => {
+	return {
+		type: 'ADD_TASKS_LIST',
+		payload: data
+	}
+}
 
-// export const downloadNewEl = data => {
-// 	return {
-// 		type: 'DOWNLOAD_NEW_EL',
-// 		payload: data
-// 	}
-// }
+export const addTasksSearchList = data => {
+	return {
+		type: 'ADD_TASKS_SEARCH_LIST',
+		payload: data
+	}
+}
 
-// export const checkEl = data => {
-// 	return {
-// 		type: 'CHECK_EL',
-// 		payload: data
-// 	}
-// }
+export const addUserTasksList = data => {
+	return {
+		type: 'ADD_USER_TASKS_LIST',
+		payload: data
+	}
+}
 
-// export const changeTextValue = data => {
-// 	return {
-// 		type: 'CHANGE_TEXT_VALUE',
-// 		payload: data
-// 	}
-// }
+export const addUserSearch = data => {
+	return {
+		type: 'ADD_USER_SEARCH',
+		payload: data
+	}
+}
 
-// export const changeSearchTextValue = data => {
-// 	return {
-// 		type: 'CHANGE_SEARCH_TEXT_VALUE',
-// 		payload: data
-// 	}
-// }
-// export const switchSearchActive = data => {
-// 	return {
-// 		type: 'SWITCH_SEARCH_ACTIVE',
-// 		payload: data
-// 	}
-// }
+export const addTaskSearch = data => {
+	return {
+		type: 'ADD_TASK_SEARCH',
+		payload: data
+	}
+}
 
-// export const changeFoundItems = data => {
-// 	return {
-// 		type: 'CHANGE_FOUND_ITEMS',
-// 		payload: data
-// 	}
-// }
+export const addUsersList = data => {
+	return {
+		type: 'ADD_USERS_LIST',
+		payload: data
+	}
+}
