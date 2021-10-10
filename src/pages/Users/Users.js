@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './Users.scss';
 
-import { adminApi } from '../../api/adminApi'
-
 import { usersApi } from '../../api/usersApi';
 import { getCookie } from '../../utils/getCookies';
 
@@ -16,8 +14,6 @@ import {
 
 import UserItem from '../../components/userItem/UserItem';
 import Search from '../../components/search/Search';
-import axios from 'axios';
-
 
 function Users() {
 

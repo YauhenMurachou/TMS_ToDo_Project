@@ -134,7 +134,7 @@ function ToDoApp() {
 
 	const sortTop = () => {
 		let copyItemsSort = items.slice();
-		console.log(items);
+		// console.log(items);
 		setText('');
 		setItems(copyItemsSort.sort((a, b) => a.title.length - b.title.length));
 	}

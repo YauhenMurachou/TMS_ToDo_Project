@@ -5,24 +5,22 @@ import './TaskUser.scss';
 
 function TaskUser(props) {
 
-	const {
-		taskId,
-		item,
-		onChange
-	} = props;
+	const { taskNumber, taskName,	checked,	onChange	} = props;
+	
 	return (
 		<li className='task-item'>
-			<span className='item-id'>{taskId}</span>
+			<span className='item-id'>{taskNumber}</span>
 
-			<label className='item-name' htmlFor={item._id}>
-				{item.name}
+			<label className='item-name' htmlFor={taskNumber}>
+				{taskName}
 			</label>
 
 			<input
 				className='item-check'
 				type='checkbox'
-				id={item._id}
-				checked={item.checked}
+				id={taskNumber}
+				name={taskNumber}
+				checked={checked}
 				onChange={onChange}
 			/>
 
