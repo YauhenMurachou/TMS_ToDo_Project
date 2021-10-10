@@ -27,13 +27,6 @@ const AuthSelect = ({
 				>
 					<option value='' disabled className='registration-input-disabled'>{defaultValueText}</option>
 
-					{/* {
-						optionsList.map(optionItem => {
-							const { _id, userName, login } = optionItem
-							return <option value={_id}>`${userName}, ${login}`</option>
-						})
-					} */}
-
 					{childOptions}
 
 				</select>

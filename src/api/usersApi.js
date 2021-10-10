@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-import { setAuthRequest } from './baseApi';
-
 export const usersApi = {
+	getUsers: async (accsesstoken) => {
 
-	getUsers: async (accsesstoken) => {		
-		setAuthRequest(accsesstoken) 		
-		return axios.get('http://localhost:3001/users')
+		return axios.get('http://localhost:3001/users', {
+			headers: {
+				authorization: `Bearer ${accsesstoken}`
+			}
+		})
 	},
 
 	getAdmins: async () => {

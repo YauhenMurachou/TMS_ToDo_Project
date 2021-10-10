@@ -2,18 +2,10 @@ import React from 'react';
 
 import './Search.scss';
 
-function Search(props) {
-
-	const {
-		placeholder,
-		onSubmit,
-		onChange,
-		value,
-		nameInput,
-	} = props
+const Search = ({ onSubmit, placeholder, onChange, value }) => {
 
 	return (
-		<div className='search-wraper'>
+		<div className='search-wrapper'>
 
 			<form
 				className='search-form'
@@ -22,17 +14,16 @@ function Search(props) {
 
 				<input
 					className='search-input'
-					name={nameInput}
 					type='text'
-					value={value}
 					placeholder={placeholder}
+					value={value}
 					onChange={onChange}
 				/>
 
 				<input
 					className='search-button'
 					type='submit'
-					value={'\u25B6'}
+					value={'search'}
 				/>
 
 			</form>

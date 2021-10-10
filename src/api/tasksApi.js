@@ -1,11 +1,22 @@
 import axios from 'axios';
 
-import { setAuthRequest } from './baseApi';
-
 export const tasksApi = {
 
 	getTasks: async (accsesstoken) => {
-		setAuthRequest(accsesstoken)
-		return axios.get('http://localhost:3001/tasks')
+
+		return axios.get('http://localhost:3001/tasks', {
+			headers: {
+				authorization: `Bearer ${accsesstoken}`
+			}
+		})
+	},
+
+	getTasksForAdmin: async (accsesstoken, id) => {
+		console.log('id', id)
+		return axios.get(`http://localhost:3001/tasks/${id}`, {
+			headers: {
+				authorization: `Bearer ${accsesstoken}`
+			}
+		})
 	}
 }

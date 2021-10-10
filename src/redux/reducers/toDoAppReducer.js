@@ -11,12 +11,7 @@ const initialState = {
 	role: role,
 	userId: userId,
 	usersList: [],
-	usersSearchList: [],
-	tasksList: [],
-	tasksSearchList: [],
-	userTasksList: [],
-	isUserSearch: false,
-	isTaskSearch: false
+	tasksList: []
 };
 
 export const toDoAppReducer = (state = initialState, action) => {
@@ -28,23 +23,8 @@ export const toDoAppReducer = (state = initialState, action) => {
 		case 'ADD_USERS_LIST':
 			return { ...state, usersList: payload }
 
-		case 'ADD_USERS_SEARCH_LIST':
-			return { ...state, usersSearchList: payload }
-
 		case 'ADD_TASKS_LIST':
 			return { ...state, tasksList: payload }
-
-		case 'ADD_TASKS_SEARCH_LIST':
-			return { ...state, tasksSearchList: payload }
-
-		case 'ADD_USER_TASKS_LIST':
-			return { ...state, userTasksList: payload }
-
-		case 'ADD_USER_SEARCH':
-			return { ...state, isUserSearch: payload }
-
-		case 'ADD_TASK_SEARCH':
-			return { ...state, isTaskSearch: payload }
 
 		default:
 			return { ...state };

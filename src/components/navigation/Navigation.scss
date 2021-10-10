@@ -5,7 +5,7 @@ a {
 .nav-container {
 	display: flex;
 	justify-content: flex-end;
-	background-color: rgb(243, 52, 52);
+	background-color: rgb(219, 76, 76);
 	align-items: center;
 	height: 100px;
 
@@ -21,7 +21,7 @@ a {
 
 	.nav-item:hover {
 		background-color: white;
-		color: rgb(243, 52, 52);
+		color: rgb(219, 76, 76);
 		transition: 0.7s;
 	}
 }
