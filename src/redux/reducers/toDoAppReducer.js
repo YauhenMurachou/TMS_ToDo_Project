@@ -9,12 +9,14 @@ const { role, id: userId } = decodedData
 const initialState = {
 	token: token,
 	role: role,
+	tasksList: [],
 	userId: userId,
-	usersList: [],
-	tasksList: []
+	usersList: []	
 };
 
+
 export const toDoAppReducer = (state = initialState, action) => {
+	// console.log('Reducer -initialState',state)
 	const { type, payload } = action;
 	switch (type) {
 		case 'SIGN_IN':
@@ -24,6 +26,7 @@ export const toDoAppReducer = (state = initialState, action) => {
 			return { ...state, usersList: payload }
 
 		case 'ADD_TASKS_LIST':
+			// console.log('ADD_TASKS_LIST', action.payload)
 			return { ...state, tasksList: payload }
 
 		default:

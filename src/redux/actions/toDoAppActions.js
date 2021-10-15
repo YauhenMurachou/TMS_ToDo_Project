@@ -11,3 +11,10 @@ export const addUsersList = data => {
 		payload: data
 	}
 }
+
+export const addTasksList = data => {
+	return {
+		type: 'ADD_TASKS_LIST',
+		payload: data
+	}
+}

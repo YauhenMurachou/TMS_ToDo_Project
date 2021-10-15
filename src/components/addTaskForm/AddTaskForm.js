@@ -2,43 +2,47 @@ import React from 'react';
 
 import './AddTaskForm.scss';
 
-const AddTaskForm = ({onSubmit,	onChange,	value	}) => {
+const AddTaskForm = ({ onSubmit, onChange, value, nameInput, nameForm }) => {
 
 	return (
 		<div>
 			<div>
-				<div>
-					<input type="checkbox"/>
+				<form onSubmit={onSubmit}
+					name={nameForm}>
+
+					<input type="checkbox" />
 
 					<label>
 						Add new task
 					</label>
 
 					<div>
-						
-						<form
-							onSubmit={onSubmit}
-						>
 
-							<label>
-								Create task:
-							</label>
 
-							<input
-								value={value}
-								onChange={onChange}
-							/>
 
-							<input
-								type="submit"
-								value="create"
-							/>
+						<label htmlFor="new-task">
+							Create task:
+						</label>
 
-						</form>
+						<input
+							value={value}
+							id="new-task"
+							// type="text"
+							onChange={onChange}
+							name={nameInput}
+						/>
+
+						<input
+							type="submit"
+							value="create"
+						/>
+
+
 					</div>
-				</div>
+				</form>
+
 			</div>
-		</div>
+		</div >
 	)
 }
 

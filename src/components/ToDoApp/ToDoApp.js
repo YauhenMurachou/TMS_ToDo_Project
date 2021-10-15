@@ -50,9 +50,11 @@ function ToDoApp() {
 		const delId = newItems.findIndex((n) => n.id === id);
 		newItems.splice(delId, 1);
 		setItems(newItems);
+		console.log(newItems)
 	}
 
 	const handleCheckbox = (id) => {
+		console.log('handleCheckbox id', id)
 		let newItems = items.slice();
 		const delId = newItems.findIndex((n) => n.id === id);
 		newItems[delId].completed = !newItems[delId].completed;
