@@ -9,6 +9,7 @@ import { ToDoApp } from '../../components';
 import Search from '../../components/search/Search';
 import TaskUser from '../../components/taskUser/TaskUser';
 import AddTaskForm from '../../components/addTaskForm/AddTaskForm';
+import CorrectForm from '../../components/correctForm/CorrectForm';
 import { addTasksList } from '../../redux/actions/toDoAppActions';
 
 const Tasks = () => {
@@ -18,13 +19,14 @@ const Tasks = () => {
 
 	const appState = useSelector(state => state.toDoAppReducer);
 	const { token, role, tasksList } = appState;
-	// const [tasks, setTasks] = useState([])
 	const [textForm, setTextForm] = useState({
-		text: ''
+		text: '',
+		correctText: ''
 	})
 
 	let [items, setItems] = useState([]);
-
+	let [correctId, setCorrectId] = useState('');
+	const [isCorrect, setIsCorrect] = useState(false)
 
 	useEffect(() => {
 		if (role === 'admin') {
@@ -38,9 +40,7 @@ const Tasks = () => {
 
 		tasksApi.getTasksForAdmin(token, user_Id)
 			.then(res => {
-				dispatch(addTasksList(res.data))
-				// const tasksList = res.data
-				// setTasks(tasksList)
+				dispatch(addTasksList(res.data))			
 			})
 			.catch(error => {
 				console.error(error.message)
@@ -59,37 +59,34 @@ const Tasks = () => {
 	}
 
 	const handleChange = (e) => {
-		// console.log('handleChange', e.target.value)
+		
 		const textFormCopy = { ...textForm }
-		// console.log('textFormCopy', textFormCopy)
 		textFormCopy[e.target.name] = e.target.value
 		setTextForm(textFormCopy)
 	}
 
 	const handleTaskSubmit = e => {
 		e.preventDefault();
-		// console.log('handleTaskSubmit', e.target.name)
-		if (role === 'admin') {
+		// console.log('handleTaskSubmit---', e.target.name)
+	
+		if (e.target.name === 'text') {
 			createTaskByAdmin()
+		} else {
+			correctTask()
 		}
 	}
 
-
 	const createTaskByAdmin = () => {
 
-		const taskListCopy = [...tasksList]
-
-		// console.log('fucking role', role)
+		const taskListCopy = [...tasksList];
 		const user_Id_Copy = user_Id;
-		const textFormCopy = { ...textForm }
+		const textFormCopy = { ...textForm };
 		const copyText = textForm.text;
-
 
 		tasksApi.createTaskForUser(copyText, user_Id_Copy, token)
 			.then((response) => {
 
 				if (response.statusText === 'Created') {
-
 					dispatch(addTasksList(taskListCopy.concat(response.data)))
 					textFormCopy.text = ''
 					setTextForm(textFormCopy)
@@ -101,29 +98,85 @@ const Tasks = () => {
 	}
 
 	const handleCheckbox = (id) => {
-		
+
 		const taskListCopy = [...tasksList]
 		const delId = taskListCopy.findIndex((n) => n._id === id);
 		taskListCopy[delId].checked = !taskListCopy[delId].checked;
 		setItems(taskListCopy);
+		patchTasksOfUsers(id, taskListCopy, taskListCopy[delId].userId, 'checked', taskListCopy[delId].checked)
 	}
 
 	const removeTask = (id) => {
-		
+
 		let taskListCopy = [...tasksList]
 		const delId = taskListCopy.findIndex((n) => n._id === id);
 		taskListCopy.splice(delId, 1);
 		dispatch(addTasksList(taskListCopy))
-		console.log(taskListCopy)
+	}
+
+	const patchTasksOfUsers = (taskID, taskListCopy, userId, typeBody = '', IDchecked = '', taskName = '') => {
+		let body = {}
+		const accsesstoken = token;
+		if (typeBody === 'checked') {
+			body = {
+				id: taskID,
+				userId: userId,
+				checked: IDchecked
+			}
+		} else {
+			body = {
+				id: taskID,
+				userId: userId,
+				name: taskName
+			}
+		}
+
+		tasksApi.patchTasks(accsesstoken, body)
+			.then((response) => {
+				console.log('Ответ - на патч', response)
+				if (response.data === 'OK') {
+					dispatch(addTasksList(taskListCopy))
+					// if (typeBody === 'name'){
+					//   handleCloseEditTask()
+					// }
+				}
+				//  setIsRequest(false)
+			})
+			.catch(error => {
+				// if (error.response.status === 401) {
+				// 	// setSessionFault(true)
+				// }
+				console.log(error)
+			})
 	}
 
 
-	// {
-	// 	id: '', // Идентификатор задачи
-	// 	userId: '', //Идентификатор пользователя, который редактирует сам задачу или которому админ редактирует задачу
-	// 	checked: '', // Если меняется статус задачи, то передавать либо true/false
-	// 	name: '' // Если переименовываем задачу, передаем в значении новое название
-	// },
+	const showCorrectForm = (id) => {
+		const taskListCopy = [...tasksList];
+		const textFormCopy = { ...textForm };
+		setTextForm(textFormCopy);
+		let correctItem = taskListCopy.find((item) => item._id === id);
+		// console.log('showCorrectForm---', correctItem)
+		setCorrectId(id);
+		textFormCopy.correctText = correctItem.name;
+
+		if (isCorrect === false) {
+			setIsCorrect(!isCorrect);
+		}
+	}
+
+	const correctTask = () => {
+
+		const taskListCopy = [...tasksList];
+		const textFormCopy = { ...textForm };	
+		let correctItem = taskListCopy.find((item) => item._id === correctId);
+		console.log('correctTask---', correctItem);		
+		correctItem.name = textFormCopy.correctText;
+
+		// console.log('correctTask---', correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
+		patchTasksOfUsers(correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
+	}
+
 
 	const renderTasks = (arr) => {
 		let result;
@@ -131,22 +184,27 @@ const Tasks = () => {
 		result = arr.map((item, index) => {
 			const { _id, name, checked } = item;
 			return (
-				< TaskUser
-					key={index}
-					id={_id}
-					taskName={name}
-					taskNumber={arr.indexOf(item) + 1}
-					onChange={() => handleCheckbox(_id)}
-					onClick={() => removeTask(_id)}
-					item={item}
-					checked={checked}
-				
-				/>
+				<>
+					< TaskUser
+						key={index}
+						id={_id}
+						taskName={name}
+						taskNumber={arr.indexOf(item) + 1}
+						onChange={() => handleCheckbox(_id)}
+						onClick={() => removeTask(_id)}
+						item={item}
+						checked={checked}
+					/>
+					{item.checked && (
+						<button className="correct-btn" onClick={() => showCorrectForm(_id)}>
+							correct
+						</button>
+					)}
+				</>
 			)
 		});
 		return result;
 	}
-
 
 	return (
 		<>
@@ -160,18 +218,28 @@ const Tasks = () => {
 					nameForm='text'
 				/>}
 
+				{isCorrect && role === 'admin' &&
+					<CorrectForm
+						//  onClick={()=>handleCloseEditTask()}
+						onChange={handleChange}
+						value={textForm.correctText}
+						nameInput='correctText'
+						formName='correctText'
+						nameButton='editTaskButton'
+						//  helpEditText={helpFieldText.editTask}
+						onSubmit={handleTaskSubmit}
+					/>}
+
 				<Search
 					placeholder='enter task name'
 				/>
-				
 
 				<div className='tasks-wrapper'>
 
-					<ul className='tasks-list'>
-						{/* {renderTasks(tasksList)} */}
+					<ul className='tasks-list'>					
 						{tasksList && tasksList.length > 0 && renderTasks(tasksList)}
 					</ul>
-					<ToDoApp/>
+					<ToDoApp />
 				</div>
 
 			</section>

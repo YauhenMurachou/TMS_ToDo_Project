@@ -9,16 +9,7 @@ const AddTaskForm = ({ onSubmit, onChange, value, nameInput, nameForm }) => {
 			<div>
 				<form onSubmit={onSubmit}
 					name={nameForm}>
-
-					<input type="checkbox" />
-
-					<label>
-						Add new task
-					</label>
-
 					<div>
-
-
 
 						<label htmlFor="new-task">
 							Create task:

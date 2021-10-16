@@ -20,8 +20,7 @@ export const tasksApi = {
 	},
 
 	createTaskForUser: async (name, user_Id, accsesstoken) => {
-		console.log('createTaskForUser API', name, user_Id, accsesstoken)
-		return axios.post('http://localhost:3001/tasks',
+			return axios.post('http://localhost:3001/tasks',
 			{
 				name: name,
 				userId: user_Id
@@ -34,6 +33,7 @@ export const tasksApi = {
 	},
 
 	patchTasks: async (accsesstoken, body) => {
+		// console.log('patchTasks API', accsesstoken, body)
 		return axios.patch('http://localhost:3001/tasks', body,
 			{
 				headers: {

@@ -25,7 +25,7 @@ function TaskUser(props) {
 						cancel
 					</button>
 				)}
-			</li>
+						</li>
 		</ul>
 	)
 }
