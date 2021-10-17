@@ -66,7 +66,6 @@ const Tasks = () => {
 
 	const handleTaskSubmit = e => {
 		e.preventDefault();
-		// console.log('handleTaskSubmit---', e.target.name)
 
 		if (e.target.name === 'text') {
 			createTaskByAdmin()
@@ -110,13 +109,6 @@ const Tasks = () => {
 		console.log('handleCheckbox---', isCorrect)
 	}
 
-	const removeTask = (id) => {
-		let taskListCopy = [...tasksList]
-		const delId = taskListCopy.findIndex((n) => n._id === id);
-		taskListCopy.splice(delId, 1);
-		dispatch(addTasksList(taskListCopy))
-	}
-
 	const patchTasksOfUsers = (taskID, taskListCopy, userId, typeBody = '', IDchecked = '', taskName = '') => {
 		let body = {}
 		const accsesstoken = token;
@@ -136,15 +128,29 @@ const Tasks = () => {
 
 		tasksApi.patchTasks(accsesstoken, body)
 			.then((response) => {
-				console.log('Ответ - на патч', response)
 				if (response.data === 'OK') {
 					dispatch(addTasksList(taskListCopy))
 				}
 			})
 			.catch(error => {
-				// if (error.response.status === 401) {
-				// 	// setSessionFault(true)
-				// }
+				console.log(error)
+			})
+	}
+
+	const removeTask = (id) => {
+		let taskListCopy = [...tasksList];
+		const accsesstoken = token;
+		let Id_Copy = user_Id;
+		const delId = taskListCopy.findIndex((n) => n._id === id);
+		taskListCopy.splice(delId, 1);
+
+		tasksApi.deleteTask(id, Id_Copy, accsesstoken)
+			.then((response) => {
+				if (response.status === 204) {
+					dispatch(addTasksList(taskListCopy))
+				}
+			})
+			.catch(error => {
 				console.log(error)
 			})
 	}
@@ -154,12 +160,11 @@ const Tasks = () => {
 		const taskListCopy = [...tasksList];
 		const textFormCopy = { ...textForm };
 		setTextForm(textFormCopy);
-		// console.log('showCorrectForm---', taskListCopy)
 		let correctItem = taskListCopy.find((item) => item._id === id);
 		setCorrectId(id);
 		textFormCopy.correctText = correctItem.name;
 
-		console.log('showCorrectForm---', textFormCopy.correctText, isCorrect)
+		// console.log('showCorrectForm---', textFormCopy.correctText, isCorrect)
 		if (isCorrect === false) {
 			setIsCorrect(!isCorrect);
 		}
@@ -172,18 +177,14 @@ const Tasks = () => {
 		const taskListCopy = [...tasksList];
 		const textFormCopy = { ...textForm };
 		let correctItem = taskListCopy.find((item) => item._id === correctId);
-		// console.log('correctTask---', correctItem);
 		correctItem.name = textFormCopy.correctText;
 
-		// console.log('correctTask---', correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
 		patchTasksOfUsers(correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
 
 		if (isCorrect === true) {
 			setIsCorrect(!isCorrect);
 		}
-
 		console.log('correctTask---', isCorrect)
-
 	}
 
 
@@ -192,9 +193,10 @@ const Tasks = () => {
 
 		result = arr.map((item, index) => {
 			const { _id, name, checked } = item;
+
 			return (
 				<>
-					< TaskUser
+					{role === 'admin' && < TaskUser
 						key={index}
 						id={_id}
 						taskName={name}
@@ -203,7 +205,21 @@ const Tasks = () => {
 						onClick={() => removeTask(_id)}
 						item={item}
 						checked={checked}
+						role={role}
 					/>
+					}
+
+					{role === 'user' && < TaskUser
+						key={index}
+						id={_id}
+						taskName={name}
+						taskNumber={arr.indexOf(item) + 1}
+						onChange={() => handleCheckbox(_id)}
+						item={item}
+						checked={checked}
+						role={role}
+					/>
+					}
 					{item.checked && (
 						<button className="correct-btn" onClick={() => showCorrectForm(_id)}>
 							correct
@@ -227,7 +243,7 @@ const Tasks = () => {
 					nameForm='text'
 				/>}
 
-				<SearchTaskForm/>
+				<SearchTaskForm />
 
 				{isCorrect &&
 					<CorrectForm
@@ -238,8 +254,6 @@ const Tasks = () => {
 						nameInput='correctText'
 						nameButton='correctButton'
 					/>}
-
-
 
 				<div className='tasks-wrapper'>
 

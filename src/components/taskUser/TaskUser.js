@@ -4,7 +4,7 @@ import './TaskUser.scss';
 
 function TaskUser(props) {
 
-	const { taskNumber, taskName, checked, onChange, item, onClick } = props;
+	const { taskNumber, taskName, checked, onChange, item, onClick, role } = props;
 
 	return (
 		<ul>
@@ -20,7 +20,7 @@ function TaskUser(props) {
 					checked={checked}
 					onChange={() => onChange()}
 				/>
-				{item.checked && (
+				{role === 'admin' && item.checked && (
 					<button className="cancel-btn" onClick={() => onClick()}>
 						cancel
 					</button>
