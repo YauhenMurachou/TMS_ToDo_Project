@@ -154,22 +154,25 @@ const Tasks = () => {
 		const taskListCopy = [...tasksList];
 		const textFormCopy = { ...textForm };
 		setTextForm(textFormCopy);
+		// console.log('showCorrectForm---', taskListCopy)
 		let correctItem = taskListCopy.find((item) => item._id === id);
-		// console.log('showCorrectForm---', correctItem)
 		setCorrectId(id);
 		textFormCopy.correctText = correctItem.name;
 
+		console.log('showCorrectForm---', textFormCopy.correctText, isCorrect)
 		if (isCorrect === false) {
 			setIsCorrect(!isCorrect);
 		}
+
+
 	}
 
 	const correctTask = () => {
-
+		console.log('correctTask---',);
 		const taskListCopy = [...tasksList];
 		const textFormCopy = { ...textForm };
 		let correctItem = taskListCopy.find((item) => item._id === correctId);
-		console.log('correctTask---', correctItem);
+		// console.log('correctTask---', correctItem);
 		correctItem.name = textFormCopy.correctText;
 
 		// console.log('correctTask---', correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
@@ -224,20 +227,19 @@ const Tasks = () => {
 					nameForm='text'
 				/>}
 
-				{isCorrect && role === 'admin' &&
+				<SearchTaskForm/>
+
+				{isCorrect &&
 					<CorrectForm
 						onChange={handleChange}
 						onSubmit={handleTaskSubmit}
 						value={textForm.correctText}
 						formName='correctText'
 						nameInput='correctText'
-						nameButton='editTaskButton'
-					//  helpEditText={helpFieldText.editTask}
-
+						nameButton='correctButton'
 					/>}
 
-				<SearchTaskForm	
-				/>
+
 
 				<div className='tasks-wrapper'>
 

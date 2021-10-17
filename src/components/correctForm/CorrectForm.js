@@ -1,53 +1,50 @@
 import React from 'react';
 
-// import './CorrectForm.scss';
+import './CorrectForm.scss';
 
 function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit, formName }) {
 
 	return (
 		<>
-			<div className="edit__content">
+			<div className='correct-wrapper'>
 
 				<form
-					className="edit__wraper"
+					className='correct-wrapper-form'
 					onSubmit={onSubmit}
 					name={formName}
 				>
 
-					<label className="edit__label" htmlFor="new-todo">
+					<label className='correct-label' htmlFor='new-todo'>
 						Correct this task
 					</label>
 
 					<input
-						className="edit__input"
-						id="new-todo"
+						className='correct-input'
+						id='new-todo'
 						value={value}
 						onChange={onChange}
 						name={nameInput}
 					/>
 
-					<div className="edit__buttons-wraper">
+					<div className='correct-btns'>
 
 						<input
-							className="edit__button"
-							type="submit"
+							className='correct-complete-btn'
+							type='submit'
 							name={nameButton}
-							value="Correct"
+							value='Correct'
 						/>
 
 						<button
-							className="edit__close-button"
-							title='Close editing'
-							onClick={onClick}>							
+							className='correct-close-button'							
+							onClick={onClick}>
+							Close					
 						</button>
 
 					</div>
-
 				</form>
-
 			</div>
-
-			<div className='edit__back'></div>
+			
 		</>
 	)
 }

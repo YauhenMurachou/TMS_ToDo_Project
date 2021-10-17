@@ -32,8 +32,7 @@ export const tasksApi = {
 			})
 	},
 
-	patchTasks: async (accsesstoken, body) => {
-		// console.log('patchTasks API', accsesstoken, body)
+	patchTasks: async (accsesstoken, body) => {		
 		return axios.patch('http://localhost:3001/tasks', body,
 			{
 				headers: {
