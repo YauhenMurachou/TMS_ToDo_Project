@@ -6,7 +6,7 @@ import './Tasks.scss';
 
 import { tasksApi } from '../../api/tasksApi';
 import { ToDoApp } from '../../components';
-import Search from '../../components/search/Search';
+import SearchTaskForm from '../../components/SearchTaskForm/SearchTaskForm';
 import TaskUser from '../../components/taskUser/TaskUser';
 import AddTaskForm from '../../components/addTaskForm/AddTaskForm';
 import CorrectForm from '../../components/correctForm/CorrectForm';
@@ -40,7 +40,7 @@ const Tasks = () => {
 
 		tasksApi.getTasksForAdmin(token, user_Id)
 			.then(res => {
-				dispatch(addTasksList(res.data))			
+				dispatch(addTasksList(res.data))
 			})
 			.catch(error => {
 				console.error(error.message)
@@ -59,7 +59,6 @@ const Tasks = () => {
 	}
 
 	const handleChange = (e) => {
-		
 		const textFormCopy = { ...textForm }
 		textFormCopy[e.target.name] = e.target.value
 		setTextForm(textFormCopy)
@@ -68,7 +67,7 @@ const Tasks = () => {
 	const handleTaskSubmit = e => {
 		e.preventDefault();
 		// console.log('handleTaskSubmit---', e.target.name)
-	
+
 		if (e.target.name === 'text') {
 			createTaskByAdmin()
 		} else {
@@ -98,16 +97,20 @@ const Tasks = () => {
 	}
 
 	const handleCheckbox = (id) => {
-
 		const taskListCopy = [...tasksList]
 		const delId = taskListCopy.findIndex((n) => n._id === id);
 		taskListCopy[delId].checked = !taskListCopy[delId].checked;
 		setItems(taskListCopy);
 		patchTasksOfUsers(id, taskListCopy, taskListCopy[delId].userId, 'checked', taskListCopy[delId].checked)
+
+		if (isCorrect === true) {
+			setIsCorrect(!isCorrect);
+		}
+
+		console.log('handleCheckbox---', isCorrect)
 	}
 
 	const removeTask = (id) => {
-
 		let taskListCopy = [...tasksList]
 		const delId = taskListCopy.findIndex((n) => n._id === id);
 		taskListCopy.splice(delId, 1);
@@ -136,11 +139,7 @@ const Tasks = () => {
 				console.log('Ответ - на патч', response)
 				if (response.data === 'OK') {
 					dispatch(addTasksList(taskListCopy))
-					// if (typeBody === 'name'){
-					//   handleCloseEditTask()
-					// }
 				}
-				//  setIsRequest(false)
 			})
 			.catch(error => {
 				// if (error.response.status === 401) {
@@ -168,13 +167,20 @@ const Tasks = () => {
 	const correctTask = () => {
 
 		const taskListCopy = [...tasksList];
-		const textFormCopy = { ...textForm };	
+		const textFormCopy = { ...textForm };
 		let correctItem = taskListCopy.find((item) => item._id === correctId);
-		console.log('correctTask---', correctItem);		
+		console.log('correctTask---', correctItem);
 		correctItem.name = textFormCopy.correctText;
 
 		// console.log('correctTask---', correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
 		patchTasksOfUsers(correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
+
+		if (isCorrect === true) {
+			setIsCorrect(!isCorrect);
+		}
+
+		console.log('correctTask---', isCorrect)
+
 	}
 
 
@@ -220,23 +226,22 @@ const Tasks = () => {
 
 				{isCorrect && role === 'admin' &&
 					<CorrectForm
-						//  onClick={()=>handleCloseEditTask()}
 						onChange={handleChange}
-						value={textForm.correctText}
-						nameInput='correctText'
-						formName='correctText'
-						nameButton='editTaskButton'
-						//  helpEditText={helpFieldText.editTask}
 						onSubmit={handleTaskSubmit}
+						value={textForm.correctText}
+						formName='correctText'
+						nameInput='correctText'
+						nameButton='editTaskButton'
+					//  helpEditText={helpFieldText.editTask}
+
 					/>}
 
-				<Search
-					placeholder='enter task name'
+				<SearchTaskForm	
 				/>
 
 				<div className='tasks-wrapper'>
 
-					<ul className='tasks-list'>					
+					<ul className='tasks-list'>
 						{tasksList && tasksList.length > 0 && renderTasks(tasksList)}
 					</ul>
 					<ToDoApp />

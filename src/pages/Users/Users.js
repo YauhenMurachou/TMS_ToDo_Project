@@ -5,7 +5,7 @@ import './Users.scss';
 
 import { usersApi } from '../../api/usersApi';
 import UserItem from '../../components/userItem/UserItem';
-import Search from '../../components/search/Search';
+import SearchUserForm from '../../components/searchUserForm/SearchUserForm';
 
 const Users = () => {
 
@@ -53,7 +53,7 @@ const Users = () => {
 		<>
 			<section className='users'>
 
-				<Search
+				<SearchUserForm
 					placeholder='Enter name of user'
 					value={searchText}
 				/>

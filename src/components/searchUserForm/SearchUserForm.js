@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './Search.scss';
+import './SearchUserForm.scss';
 
-const Search = ({ onSubmit, placeholder, onChange, value }) => {
+const SearchUserForm = ({ onSubmit, placeholder, onChange, value }) => {
 
 	return (
 		<div className='search-wrapper'>
@@ -12,8 +12,13 @@ const Search = ({ onSubmit, placeholder, onChange, value }) => {
 				onSubmit={onSubmit}
 			>
 
+				<label htmlFor="search-task">
+					Search user:
+				</label>
+
 				<input
 					className='search-input'
+					id="search-task"
 					type='text'
 					placeholder={placeholder}
 					value={value}
@@ -31,4 +36,4 @@ const Search = ({ onSubmit, placeholder, onChange, value }) => {
 	)
 }
 
-export default Search;
+export default SearchUserForm;

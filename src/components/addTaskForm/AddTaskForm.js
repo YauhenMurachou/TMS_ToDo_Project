@@ -9,7 +9,7 @@ const AddTaskForm = ({ onSubmit, onChange, value, nameInput, nameForm }) => {
 			<div>
 				<form onSubmit={onSubmit}
 					name={nameForm}>
-					<div>
+					<div className = 'create-task-form'>
 
 						<label htmlFor="new-task">
 							Create task:

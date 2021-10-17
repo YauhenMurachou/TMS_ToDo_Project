@@ -1,10 +1,8 @@
 import React from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 // import './CorrectForm.scss';
 
-function CorrectForm({ onClick, onChange, value, nameInput, nameButton, helpEditText, onSubmit, formName }) {
+function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit, formName }) {
 
 	return (
 		<>
@@ -28,24 +26,19 @@ function CorrectForm({ onClick, onChange, value, nameInput, nameButton, helpEdit
 						name={nameInput}
 					/>
 
-					{/* <div className='edit_help-text'>
-						<span>{helpEditText}</span>
-					</div> */}
-
 					<div className="edit__buttons-wraper">
 
 						<input
 							className="edit__button"
 							type="submit"
 							name={nameButton}
-							value="Edit task"
+							value="Correct"
 						/>
 
 						<button
 							className="edit__close-button"
 							title='Close editing'
-							onClick={onClick}>
-							{/* <FontAwesomeIcon icon={faTimesCircle} /> */}
+							onClick={onClick}>							
 						</button>
 
 					</div>
