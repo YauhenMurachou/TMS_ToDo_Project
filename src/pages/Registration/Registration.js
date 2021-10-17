@@ -211,7 +211,6 @@ const Registration = () => {
 		}
 
 		const response2 = await authApi.signUpUser(newUser)
-		console.log('response', response2)
 	}
 
 	const roleSelectOption = () => {
@@ -236,6 +235,13 @@ const Registration = () => {
 
 	return (
 		<div>
+
+			<div className='signin-top-line'>
+				<i className="far fa-list-alt"></i>
+				<div className='signin-top-line-text'>Don't forget to... Your ToDo List
+				</div>
+			</div>
+
 			<form className='registr-form' onSubmit={handleSubmitForm}>
 
 				<div className='container'>
@@ -351,9 +357,9 @@ const Registration = () => {
 				</div>
 
 				<Link to={Routes.SignInRoute} >
-					<button className='registration-btn'>
+					<div className='registration-btn'>
 						<span>Sign In</span>
-					</button>
+					</div>
 				</Link>
 
 			</form >
