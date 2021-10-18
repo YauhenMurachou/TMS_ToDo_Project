@@ -1,7 +1,6 @@
-import React from "react";
+import React from 'react';
 
 import './AuthInput.scss';
-
 
 const AuthInput = ({
 	inputTitle,

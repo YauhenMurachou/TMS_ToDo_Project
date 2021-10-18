@@ -1,0 +1,25 @@
+.users {
+	margin: 0px auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	.users-input{
+		margin-top: 15px;
+	}
+
+	.users-wrapper {
+		max-width: 720px;
+		width: 100%;
+
+		.users-list {
+			list-style: none;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			padding-left: 0px;
+		}
+	}
+}

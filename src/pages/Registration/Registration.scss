@@ -14,7 +14,7 @@
 	}
 
 	.sub-btn {
-		background-color: rgb(243, 52, 52);
+		background-color: rgb(219, 76, 76);
 		color: white;
 		padding: 14px 20px;
 		margin: 8px 0;
@@ -31,7 +31,7 @@
 	.cancelbtn {
 		width: auto;
 		padding: 10px 18px;
-		background-color: rgb(243, 52, 52);
+		background-color: rgb(219, 76, 76);
 	}
 
 	.container {
@@ -82,19 +82,15 @@
 }
 
 .registration-btn {
-	margin: 15px auto 0 auto;
-	display: block;
-	background-color: rgb(85, 101, 240);
-	border: none;
-	outline: none;
-	padding: 10px;
+	text-align: center;
 
 	&:hover {
-		opacity: 0.8;
+		text-decoration: underline rgb(85, 101, 240);
 	}
 
 	span {
-		color: white;
+		color: rgb(85, 101, 240);
+		font-weight: 600;
+		font-size: 16px;
 	}
 }
-

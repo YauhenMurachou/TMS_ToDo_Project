@@ -1,20 +1,18 @@
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import './App.css';
 
 import { Home, SignIn, Registration, Tasks, Users } from '../pages';
-
 import { Routes } from '../utils/routes';
 import { AuthorizedRoute, NotAuthorizedRoute } from '../components/routes';
-import { restoreAuth } from '../redux/actions/toDoAppActions';
-import { getCookie } from '../utils/getCookies';
+
 
 const App = () => {
 
-		const { token, role } = useSelector(state => state.toDoAppReducer)
-	
+	const { token, role } = useSelector(state => state.toDoAppReducer)
+
 	return (
 		<Router>
 
@@ -36,6 +34,13 @@ const App = () => {
 				isAuthorized={Boolean(token)}
 				hasPermission={role === 'admin'}
 				component={Users} />
+
+			< AuthorizedRoute
+				path='/tasks/:user_Id'
+				component={Tasks}
+				isAuthorized={Boolean(token)}
+				hasPermission={role === 'admin'}
+			/>
 
 		</Router>
 	)

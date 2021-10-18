@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Jwt from 'jsonwebtoken';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import '../SignIn/SignIn.scss';
 
@@ -73,36 +76,35 @@ const SignIn = () => {
 
 
 	const handleSubmitForm = async (event) => {
-
-		event.preventDefault()
-
-		if (handleCheckEmptyForm()) {
-			return
-		}
-		const user = {
-			userName: userNameValue,
-			password: pswValue
-		}
 		try {
+			event.preventDefault()
+			if (handleCheckEmptyForm()) {
+				return
+			}
+			const user = {
+				userName: userNameValue,
+				password: pswValue
+			}
+
 			const res = await authApi.signInUser(user)
-
-			const { token, role } = res.data
-
-			// document.cookie = 'authorization' + '=' + token
-			// document.cookie = 'role' + '=' + role
+			const { token } = res.data
 
 			setCookie('authorization', token)
-			setCookie('role', role)
 
-			dispatch(signIn({ role, token }))
+			const decodedData = Jwt.decode(token)
+			const { role, id: userId } = decodedData
 
-			if (res.data.role === 'admin') {
+			dispatch(signIn({ role, token, userId }))
+
+			if (role === 'admin') {
 				linkToRoute(history, Routes.UsersRoute)
 			} else {
 				linkToRoute(history, Routes.TasksRoute)
 			}
 
 		} catch (error) {
+			console.log('why dont go', error)
+
 			const loginFormErrorCopy = { ...loginFormError };
 			const errorMessage = error.response.data.message
 
@@ -118,8 +120,13 @@ const SignIn = () => {
 
 	return (
 		<div>
+			<div className='signin-top-line'>
+				<i className="far fa-list-alt"></i>
+				<div className='signin-top-line-text'>Don't forget to... Your ToDo List
+				</div>
+			</div>
 			<form className='registr-form' onSubmit={handleSubmitForm}>
-
+			
 				<div className='imgcontainer'>
 					<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgxfDAMqK3mhyikTk6uhY8Bn3HdpjkMvuzLQ&usqp=CAU' alt='Avatar' class='avatar' />
 				</div>
@@ -164,19 +171,18 @@ const SignIn = () => {
 						handleCheckValidForm={handleCheckEmptyForm}
 					/>
 
-					{/* <Link to={Routes.TasksRoute} > */}
-					<button type='submit' className='sub-btn'>Sign In</button>
-					{/* </Link> */}
+					<button type='submit' className='signin-btn'>Sign In</button>
+
 				</div>
 
 				<div className='form-or'>
-					Don't have an account?
+					Don't have an account yet?
 				</div>
 
 				<Link to={Routes.SignUpRoute} >
-					<button className='registration-btn'>
+					<div className='registration-redirect'>
 						<span>Go to registration</span>
-					</button>
+					</div>
 				</Link>
 			</form>
 		</div>
