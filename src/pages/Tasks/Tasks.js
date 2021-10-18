@@ -11,6 +11,7 @@ import TaskUser from '../../components/taskUser/TaskUser';
 import AddTaskForm from '../../components/addTaskForm/AddTaskForm';
 import CorrectForm from '../../components/correctForm/CorrectForm';
 import { addTasksList } from '../../redux/actions/toDoAppActions';
+import CorrectButton from '../../components/correctButton/CorrectButton';
 
 const Tasks = () => {
 
@@ -220,11 +221,16 @@ const Tasks = () => {
 						role={role}
 					/>
 					}
-					{item.checked && (
+
+					{/* {item.checked && (
 						<button className="correct-btn" onClick={() => showCorrectForm(_id)}>
 							correct
 						</button>
-					)}
+					)} */}
+
+					{item.checked && <CorrectButton
+					onClick={() => showCorrectForm(_id)}					
+					/>}
 				</>
 			)
 		});
@@ -260,7 +266,7 @@ const Tasks = () => {
 					<ul className='tasks-list'>
 						{tasksList && tasksList.length > 0 && renderTasks(tasksList)}
 					</ul>
-					<ToDoApp />
+					{/* <ToDoApp /> */}
 				</div>
 
 			</section>

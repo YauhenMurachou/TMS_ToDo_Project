@@ -1,5 +1,14 @@
+.tasks-wrapper{	
+	text-align: center;
 
-
-.correct-btn{
-	background-color: rgb(71, 231, 132);
+	.tasks-list{
+		list-style-type: none;
+		text-align: center;
 	}
+	.correct-btn{
+		background-color: rgb(71, 231, 132);
+		display: inline;
+		text-decoration: none;
+		}
+}
+
