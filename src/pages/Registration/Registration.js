@@ -7,6 +7,7 @@ import { AuthInput, AuthSelect } from '../../components';
 import { Routes } from '../../utils/routes';
 import { authApi } from '../../api/authApi';
 import { usersApi } from '../../api/usersApi';
+import TimeOverWindow from '../../components/timeOverWindow/TimeOverWindow';
 
 const Registration = () => {
 
@@ -29,6 +30,8 @@ const Registration = () => {
 	});
 
 	const [admins, setAdmins] = useState([]);
+	const [isRegistr, setIsRegistr] = useState(false);
+	const [popUpContent, setPopUpContent] = useState('')
 
 	useEffect(() => {
 		getAdminsList()
@@ -140,7 +143,6 @@ const Registration = () => {
 		if (inputName !== '' && errorName !== '') {
 			handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, inputName, errorName)
 			setSignUpFormError(signUpFormErrorCopy)
-			// return true
 
 		} else {
 
@@ -211,6 +213,15 @@ const Registration = () => {
 		}
 
 		const response2 = await authApi.signUpUser(newUser)
+
+		const newUserName = newUser.userName
+
+		if (response2.statusText === 'Created') {
+			setIsRegistr(true)
+			setPopUpContent(` ${newUserName} is successfully registered. Go to data entry `)
+		}
+
+
 	}
 
 	const roleSelectOption = () => {
@@ -241,6 +252,12 @@ const Registration = () => {
 				<div className='signin-top-line-text'>Don't forget to... Your ToDo List
 				</div>
 			</div>
+
+			{isRegistr && <TimeOverWindow
+				text={popUpContent}
+				onClick={() => setIsRegistr(false)}
+				link='SignInRoute'
+			/>}
 
 			<form className='registr-form' onSubmit={handleSubmitForm}>
 

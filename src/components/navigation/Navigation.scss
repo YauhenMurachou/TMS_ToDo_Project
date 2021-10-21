@@ -9,19 +9,44 @@ a {
 	align-items: center;
 	height: 70px;
 
+.nav-item-high {
+	cursor: pointer;
+	height: 100px;
+	font-size: 25px;
+	width: 150px;
+	line-height: 100px;
+	text-align: center;
+	color: white;
+}
+
 	.nav-item {
 		cursor: pointer;
-		height: 100px;
+		height: 20px;
 		font-size: 25px;
 		width: 150px;
-		line-height: 100px;
+		line-height: 20px;
 		text-align: center;
-		color: white;
+		color: inherit;
+		padding-top: 40px;		
 	}
 
-	.nav-item:hover {
+	.nav-item-high:hover {
 		background-color: white;
 		color: rgb(219, 76, 76);
 		transition: 0.7s;
+	}
+
+	.users-item {
+		cursor: pointer;		
+		font-size: 25px;
+		width: 150px;	
+		text-align: center;
+		color: inherit;		
+	}
+
+	.users-item:after{
+		font-size: 10px;
+		content: '(only for admins)';
+		margin-top: 5px;
 	}
 }

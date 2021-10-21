@@ -16,24 +16,34 @@ const Navigation = () => {
 				Home
 			</div>
 		</Link> */}
+
 		<Link to={Routes.SignInRoute}>
-			<div className='nav-item'>
-				Login
+			<div className='nav-item-high'>
+				<div className='nav-item'>
+					Login
+				</div>
 			</div>
 		</Link>
 		<Link to={Routes.SignUpRoute}>
-			<div className='nav-item'>
-				Registration
+			<div className='nav-item-high'>
+				<div className='nav-item'>
+					Registration
+				</div>
 			</div>
 		</Link>
-		<Link to={Routes.TasksRoute}>
+
+		{/* <Link to={Routes.TasksRoute}>
 			<div className='nav-item'>
 				Tasks
 			</div>
-		</Link>
+		</Link> */}
+
 		<Link to={Routes.UsersRoute}>
-			<div className='nav-item'>
-				Users
+			<div className='nav-item-high'>
+				<div className='nav-item users-item' >
+					Users
+					<br/>
+				</div>
 			</div>
 		</Link>
 	</div>
