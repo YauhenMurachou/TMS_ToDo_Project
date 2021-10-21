@@ -12,6 +12,7 @@ import AddTaskForm from '../../components/addTaskForm/AddTaskForm';
 import CorrectForm from '../../components/correctForm/CorrectForm';
 import { addTasksList } from '../../redux/actions/toDoAppActions';
 import CorrectButton from '../../components/correctButton/CorrectButton';
+import TimeOverWindow from '../../components/timeOverWindow/TimeOverWindow';
 
 const Tasks = () => {
 
@@ -27,9 +28,12 @@ const Tasks = () => {
 
 	let [items, setItems] = useState([]);
 	let [correctId, setCorrectId] = useState('');
-	const [isCorrect, setIsCorrect] = useState(false)
+	const [isCorrect, setIsCorrect] = useState(false);
+	const [timeOver, setTimeOver] = useState(false);
 
 	useEffect(() => {
+		setTimeOver(false)
+
 		if (role === 'admin') {
 			getTasksForAdmin()
 		} else {
@@ -44,6 +48,9 @@ const Tasks = () => {
 				dispatch(addTasksList(res.data))
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.error(error.message)
 			})
 	}
@@ -55,6 +62,9 @@ const Tasks = () => {
 				dispatch(addTasksList(res.data))
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.error(error.message)
 			})
 	}
@@ -92,6 +102,9 @@ const Tasks = () => {
 				}
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.log(error)
 			})
 	}
@@ -134,6 +147,9 @@ const Tasks = () => {
 				}
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.log(error)
 			})
 	}
@@ -169,8 +185,6 @@ const Tasks = () => {
 		if (isCorrect === false) {
 			setIsCorrect(!isCorrect);
 		}
-
-
 	}
 
 	const correctTask = () => {
@@ -229,7 +243,7 @@ const Tasks = () => {
 					)} */}
 
 					{item.checked && <CorrectButton
-					onClick={() => showCorrectForm(_id)}					
+						onClick={() => showCorrectForm(_id)}
 					/>}
 				</>
 			)
@@ -240,6 +254,13 @@ const Tasks = () => {
 	return (
 		<>
 			<section className='tasks-section'>
+
+				{timeOver && <TimeOverWindow
+					text='Your time is over! Go to signIn'
+					onClick={() => setTimeOver(false)}
+					link='SignInRoute'
+				/>}
+
 
 				{role === 'admin' && < AddTaskForm
 					value={textForm.text}

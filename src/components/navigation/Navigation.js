@@ -11,11 +11,11 @@ const Navigation = () => {
 
 	return <div className='nav-container'>
 
-		<Link to={Routes.HomeRoute}>
+		{/* <Link to={Routes.HomeRoute}>
 			<div className='nav-item'>
 				Home
 			</div>
-		</Link>
+		</Link> */}
 		<Link to={Routes.SignInRoute}>
 			<div className='nav-item'>
 				Login
