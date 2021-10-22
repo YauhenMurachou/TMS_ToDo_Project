@@ -4,20 +4,44 @@ a {
 
 .nav-container {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 	background-color: rgb(219, 76, 76);
 	align-items: center;
 	height: 70px;
 
-.nav-item-high {
-	cursor: pointer;
-	height: 100px;
-	font-size: 25px;
-	width: 150px;
-	line-height: 100px;
-	text-align: center;
-	color: white;
-}
+	.nav-top-line {
+		padding-left: 60px;
+
+		.nav-top-line-text {
+			margin-left: 30px;
+			color: white;
+			font-size: 30px;
+			display: inline-block;
+			font-style: italic;
+			margin-top: 20px;
+			vertical-align: top;
+		}
+
+		.fa-list-alt {
+			font-size: 70px;
+			color: white;
+		}
+	}
+
+	.nav-right{
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.nav-item-high {
+		cursor: pointer;
+		height: 100px;
+		font-size: 25px;
+		width: 150px;
+		line-height: 100px;
+		text-align: center;
+		color: white;
+	}
 
 	.nav-item {
 		cursor: pointer;
@@ -27,7 +51,7 @@ a {
 		line-height: 20px;
 		text-align: center;
 		color: inherit;
-		padding-top: 40px;		
+		padding-top: 40px;
 	}
 
 	.nav-item-high:hover {
@@ -37,16 +61,16 @@ a {
 	}
 
 	.users-item {
-		cursor: pointer;		
+		cursor: pointer;
 		font-size: 25px;
-		width: 150px;	
+		width: 150px;
 		text-align: center;
-		color: inherit;		
+		color: inherit;
 	}
 
-	.users-item:after{
+	.users-item:after {
 		font-size: 10px;
-		content: '(only for admins)';
+		content: "(only for admins)";
 		margin-top: 5px;
 	}
 }

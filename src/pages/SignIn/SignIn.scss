@@ -1,16 +1,16 @@
-// body {
-// 	background-image: url(../../checklist-g9e10d8c33_1920.jpg);
-// 	background-size: cover;
-// }
+body {
+	background-image: url(../../taxi-tasks-done.png);
+	background-position: top 130px left 90px;
+	background-repeat: no-repeat;
+	background-size: 300px 430px;
+}
 
-.signin-top-line {
+.nav-top-line {
 	background-color: rgb(219, 76, 76);
-
 	height: 70px;
-
 	padding-left: 60px;
 
-	.signin-top-line-text {
+	.nav-top-line-text {
 		margin-left: 30px;
 		color: white;
 		font-size: 30px;
@@ -31,6 +31,11 @@
 	max-width: 400px;
 	margin: 0 auto;
 	background-color: white;
+
+	.registr-form-title {
+		text-align: center;
+		font-weight: 600;
+	}
 
 	.imgcontainer {
 		text-align: center;
@@ -103,7 +108,7 @@
 
 .registration-redirect {
 	text-align: center;
-	
+
 	&:hover {
 		text-decoration: underline rgb(85, 101, 240);
 	}

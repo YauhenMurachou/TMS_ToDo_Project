@@ -120,13 +120,17 @@ const SignIn = () => {
 
 	return (
 		<div>
-			<div className='signin-top-line'>
+			<div className='nav-top-line'>
 				<i className="far fa-list-alt"></i>
-				<div className='signin-top-line-text'>Don't forget to... Your ToDo List
+				<div className='nav-top-line-text'>Don't forget to... Your ToDo List
 				</div>
 			</div>
 			<form className='registr-form' onSubmit={handleSubmitForm}>
-			
+
+				<div className='registr-form-title'>
+				Welcome to our community, anonymous
+				</div>
+
 				<div className='imgcontainer'>
 					<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgxfDAMqK3mhyikTk6uhY8Bn3HdpjkMvuzLQ&usqp=CAU' alt='Avatar' class='avatar' />
 				</div>
