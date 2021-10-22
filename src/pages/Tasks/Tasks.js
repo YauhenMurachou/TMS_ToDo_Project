@@ -30,6 +30,10 @@ const Tasks = () => {
 	let [correctId, setCorrectId] = useState('');
 	const [isCorrect, setIsCorrect] = useState(false);
 	const [timeOver, setTimeOver] = useState(false);
+	const [errorMessage, setErrorMessage] = useState({
+		text: '',
+		correctText: ''
+	});
 
 	useEffect(() => {
 		setTimeOver(false)
@@ -73,10 +77,20 @@ const Tasks = () => {
 		const textFormCopy = { ...textForm }
 		textFormCopy[e.target.name] = e.target.value
 		setTextForm(textFormCopy)
+		setErrorMessage({})
 	}
 
 	const handleTaskSubmit = e => {
 		e.preventDefault();
+
+		const errorMessageCopy = { ...errorMessage }
+
+		if (textForm[e.target.name].trim().length < 5) {
+			console.log('errorMessage', errorMessageCopy)
+			errorMessageCopy[e.target.name] = 'The task must contain at least 5 characters'
+			setErrorMessage(errorMessageCopy)			
+			return;
+		}
 
 		if (e.target.name === 'text') {
 			createTaskByAdmin()
@@ -180,8 +194,7 @@ const Tasks = () => {
 		let correctItem = taskListCopy.find((item) => item._id === id);
 		setCorrectId(id);
 		textFormCopy.correctText = correctItem.name;
-
-		// console.log('showCorrectForm---', textFormCopy.correctText, isCorrect)
+		
 		if (isCorrect === false) {
 			setIsCorrect(!isCorrect);
 		}
@@ -268,6 +281,7 @@ const Tasks = () => {
 					onSubmit={handleTaskSubmit}
 					nameInput='text'
 					nameForm='text'
+					errorMessage={errorMessage.text}
 				/>}
 
 				<SearchTaskForm />

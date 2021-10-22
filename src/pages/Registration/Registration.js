@@ -48,7 +48,6 @@ const Registration = () => {
 	const { userNameValue, loginValue, pswValue, repeatPswValue, selectRoleValue, selectAdminValue } = signUpForm;
 	const { userNameError, loginError, pswError, repeatPswError, selectRoleError, selectAdminError } = signUpFormError;
 
-	// если поле пустое, присваиваем название пусто соответствующей ошибке и возвр тру
 	const handleCheckEmptyInput = (signUpForm, signUpFormError, inputName, errorName) => {
 		if (signUpForm[inputName] === '') {
 			signUpFormError[errorName] = 'empty'
