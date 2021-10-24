@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import '../navigation/Navigation.scss'
 
@@ -12,7 +12,7 @@ const Navigation = () => {
 	return <div className='nav-container'>
 
 		<div className='nav-top-line'>
-			<i className="far fa-list-alt"></i>
+			<i className='far fa-list-alt'></i>
 			<div className='nav-top-line-text'>Don't forget to... Your ToDo List
 			</div>
 		</div>

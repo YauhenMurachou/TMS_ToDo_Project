@@ -12,13 +12,13 @@ const SearchTaskForm = ({ onSubmit, placeholder, onChange, value }) => {
 				onSubmit={onSubmit}
 			>
 
-				<label htmlFor="search-task">
+				<label htmlFor='search-task' className='label-search-task'>
 					Search task:
 				</label>
 
 				<input
 					className='search-input'
-					id="search-task"
+					id='search-task'
 					type='text'
 					placeholder={placeholder}
 					value={value}
@@ -32,6 +32,7 @@ const SearchTaskForm = ({ onSubmit, placeholder, onChange, value }) => {
 				/>
 
 			</form>
+			
 		</div>
 	)
 }

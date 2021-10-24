@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -21,11 +21,8 @@ const Tasks = () => {
 
 	const appState = useSelector(state => state.toDoAppReducer);
 	const { token, role, tasksList } = appState;
-	const [textForm, setTextForm] = useState({
-		text: '',
-		correctText: ''
-	})
-
+	const [searchItems, setSearchItems] = useState(null);
+	const [searchText, setSearchText] = useState('');
 	let [items, setItems] = useState([]);
 	let [correctId, setCorrectId] = useState('');
 	const [isCorrect, setIsCorrect] = useState(false);
@@ -34,6 +31,11 @@ const Tasks = () => {
 		text: '',
 		correctText: ''
 	});
+	const [textForm, setTextForm] = useState({
+		text: '',
+		correctText: ''
+	})
+	const inputSearchEl = useRef(null);
 
 	useEffect(() => {
 		setTimeOver(false)
@@ -73,6 +75,23 @@ const Tasks = () => {
 			})
 	}
 
+	const handleSubmitSearch = (e) => {
+
+		e.preventDefault();
+		if (searchText === '') {
+			setSearchItems([])
+
+		} else {
+			let arrayCopy = [...tasksList];
+			const searchItemsCopy = arrayCopy.filter(item => item.name.includes(searchText));
+			setSearchItems(searchItemsCopy);					
+		}
+	}
+
+	const handleChangeSearch = (e) => {
+		setSearchText(e.target.value);
+	}
+
 	const checkInput = (e) => {
 		let result = true;
 		let arrayCopy = [...tasksList]
@@ -100,7 +119,7 @@ const Tasks = () => {
 		const errorMessageCopy = { ...errorMessage }
 
 		if (textForm[e.target.name].trim().length < 5) {
-		
+
 			errorMessageCopy[e.target.name] = 'The task must contain at least 5 characters'
 			setErrorMessage(errorMessageCopy)
 			return;
@@ -220,34 +239,15 @@ const Tasks = () => {
 	}
 
 	const correctTask = () => {
-	
-		console.log('correctTask---', errorMessage.text);
-		
-		const errorMessageCopy = { ...errorMessage }
 		const taskListCopy = [...tasksList];
 		const textFormCopy = { ...textForm };
 		let correctItem = taskListCopy.find((item) => item._id === correctId);
 		correctItem.name = textFormCopy.correctText;
-
-		// if (textForm[e.target.name].trim().length < 5) {
-		
-		// 	errorMessageCopy[e.target.name] = 'The task must contain at least 5 characters'
-		// 	setErrorMessage(errorMessageCopy)
-		// 	return;
-		// }
-
-		// if (checkInput(e)) {
-		// 	errorMessageCopy[e.target.name] = 'This task has already been created'
-		// 	setErrorMessage(errorMessageCopy)
-		// 	return;
-		// }
-
-
 		patchTasksOfUsers(correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
 
 		if (isCorrect === true) {
 			setIsCorrect(!isCorrect);
-		}	
+		}
 	}
 
 
@@ -303,6 +303,10 @@ const Tasks = () => {
 		<>
 			<section className='tasks-section'>
 
+				<div className='logo-tasks'>
+					
+				</div>
+
 				{timeOver && <TimeOverWindow
 					text='Your time is over! Go to signIn'
 					onClick={() => setTimeOver(false)}
@@ -319,7 +323,13 @@ const Tasks = () => {
 					errorMessage={errorMessage.text}
 				/>}
 
-				<SearchTaskForm />
+				<SearchTaskForm
+					onSubmit={handleSubmitSearch}
+					onChange={handleChangeSearch}
+					value={searchText}
+					ref={inputSearchEl}
+				/>
+				{/* {changeTask()} */}
 
 				{isCorrect &&
 					<CorrectForm
@@ -335,7 +345,8 @@ const Tasks = () => {
 				<div className='tasks-wrapper'>
 
 					<ul className='tasks-list'>
-						{tasksList && tasksList.length > 0 && renderTasks(tasksList)}
+						{tasksList && tasksList.length > 0 && !searchItems && renderTasks(tasksList)}
+						{searchItems && renderTasks(searchItems)}
 					</ul>
 					{/* <ToDoApp /> */}
 				</div>

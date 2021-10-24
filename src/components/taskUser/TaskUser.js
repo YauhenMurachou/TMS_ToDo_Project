@@ -2,13 +2,17 @@ import React from 'react';
 
 import './TaskUser.scss';
 
-function TaskUser(props) {
+const TaskUser = (props) => {
 
 	const { taskNumber, taskName, checked, onChange, item, onClick, role } = props;
 
 	return (
 
-		<li className='task-item'>
+		<li className={
+			item.checked
+				? 'task-item-checked'
+				: 'task-item'
+		}>
 			<span className='item-id'>{`${taskNumber}.`}</span>
 			<label className='item-name' htmlFor={taskNumber}>
 				{` ${taskName}`}
@@ -21,7 +25,7 @@ function TaskUser(props) {
 				onChange={() => onChange()}
 			/>
 			{role === 'admin' && item.checked && (
-				<button className="cancel-btn-task" onClick={() => onClick()}>
+				<button className='cancel-btn-task' onClick={() => onClick()}>
 					Delete task
 				</button>
 			)}

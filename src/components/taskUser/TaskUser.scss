@@ -1,25 +1,37 @@
-	.task-item {
-		list-style-type: none;
-		padding: 10px;
-		border: 2px solid rgb(219, 76, 76);
-		border-radius: 6px;
-		margin: 10px auto 0 auto;
-		max-width: 400px;
-		font-size: 18px;
+.task-item {
+	list-style-type: none;
+	padding: 10px;
+	border: 2px solid rgb(219, 76, 76);
+	border-radius: 6px;
+	margin: 10px auto 0 auto;
+	max-width: 400px;
+	font-size: 18px;
 
-		.cancel-btn-task {
-			margin-left: 25px;
-			font-size: 14px;
-			cursor: pointer;
-			color: #fff;
-			border: 1px solid #fff;
-			background-color: rgb(219, 76, 76);
-			border-radius: 3px;
-			padding: 5px;
-			// max-height: 25px;
-		}
-	}
+	&:hover {
+		background-color: rgb(87, 82, 82);
+		border: 2px solid rgb(87, 82, 82);
+		color: white;
+	}	
+}
 
+.task-item-checked {
+	list-style-type: none;
+	padding: 10px;
+	border: 2px solid rgb(219, 76, 76);
+	border-radius: 6px;
+	margin: 10px auto 0 auto;
+	max-width: 400px;
+	font-size: 18px;
+}
 
-
-
+.cancel-btn-task {
+	margin-left: 25px;
+	font-size: 14px;
+	cursor: pointer;
+	color: #fff;
+	border: 1px solid #fff;
+	background-color: rgb(219, 76, 76);
+	border-radius: 3px;
+	padding: 5px;
+	// max-height: 25px;
+}
