@@ -73,6 +73,20 @@ const Tasks = () => {
 			})
 	}
 
+	const checkInput = (e) => {
+		let result = true;
+		let arrayCopy = [...tasksList]
+		let copyText = textForm[e.target.name];
+		copyText = copyText.replace(/\s/g, '');
+
+		let index = arrayCopy.findIndex(item => item.name.replace(/\s/g, '') === copyText);
+
+		if (index === -1) {
+			result = false
+		}
+		return result;
+	}
+
 	const handleChange = (e) => {
 		const textFormCopy = { ...textForm }
 		textFormCopy[e.target.name] = e.target.value
@@ -86,9 +100,15 @@ const Tasks = () => {
 		const errorMessageCopy = { ...errorMessage }
 
 		if (textForm[e.target.name].trim().length < 5) {
-			console.log('errorMessage', errorMessageCopy)
+		
 			errorMessageCopy[e.target.name] = 'The task must contain at least 5 characters'
-			setErrorMessage(errorMessageCopy)			
+			setErrorMessage(errorMessageCopy)
+			return;
+		}
+
+		if (checkInput(e)) {
+			errorMessageCopy[e.target.name] = 'This task has already been created'
+			setErrorMessage(errorMessageCopy)
 			return;
 		}
 
@@ -194,7 +214,7 @@ const Tasks = () => {
 		let correctItem = taskListCopy.find((item) => item._id === id);
 		setCorrectId(id);
 		textFormCopy.correctText = correctItem.name;
-		
+
 		if (isCorrect === false) {
 			setIsCorrect(!isCorrect);
 		}

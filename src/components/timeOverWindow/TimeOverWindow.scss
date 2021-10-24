@@ -28,9 +28,15 @@
 			flex-direction: column;
 			transition: all 0.8s ease 0s;
 			transform: translate(0px, -100%);
+			text-align: center;		
 
 			.time-btn {
 				text-align: center;
+				background-color: rgb(219, 76, 76);
+				color: white;
+				border: none;
+				border-radius: 3px;
+				padding: 5px;
 			}
 
 			.popup__close {
@@ -42,4 +48,3 @@
 		}
 	}
 }
-

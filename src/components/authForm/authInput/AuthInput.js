@@ -22,7 +22,11 @@ const AuthInput = ({
 
 	return (
 		<div className='input-wrapper'>
-			<label for='inputName'><b>{inputTitle}</b></label>
+			<label for='inputName' className={
+				disabled === true
+					? "psw-repeat-nonactive"
+					: "psw-active"
+			}><b>{inputTitle}</b></label>
 			<input type={inputType} placeholder={inputPlaceholder}
 				name={inputName} className='registration-input'
 				value={inputValue}
