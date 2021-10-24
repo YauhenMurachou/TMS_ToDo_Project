@@ -21,7 +21,7 @@ const Navigation = () => {
 			<Link to={Routes.SignInRoute}>
 				<div className='nav-item-high'>
 					<div className='nav-item'>
-						Login
+						Log Out
 					</div>
 				</div>
 			</Link>

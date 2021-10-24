@@ -77,9 +77,9 @@ const Tasks = () => {
 		let result = true;
 		let arrayCopy = [...tasksList]
 		let copyText = textForm[e.target.name];
-		copyText = copyText.replace(/\s/g, '');
+		copyText = copyText.replace(/\s/g, '').toLowerCase();
 
-		let index = arrayCopy.findIndex(item => item.name.replace(/\s/g, '') === copyText);
+		let index = arrayCopy.findIndex(item => item.name.replace(/\s/g, '').toLowerCase() === copyText);
 
 		if (index === -1) {
 			result = false
@@ -109,6 +109,7 @@ const Tasks = () => {
 		if (checkInput(e)) {
 			errorMessageCopy[e.target.name] = 'This task has already been created'
 			setErrorMessage(errorMessageCopy)
+			console.log('handleTaskSubmit---', errorMessage);
 			return;
 		}
 
@@ -153,8 +154,6 @@ const Tasks = () => {
 		if (isCorrect === true) {
 			setIsCorrect(!isCorrect);
 		}
-
-		console.log('handleCheckbox---', isCorrect)
 	}
 
 	const patchTasksOfUsers = (taskID, taskListCopy, userId, typeBody = '', IDchecked = '', taskName = '') => {
@@ -221,18 +220,34 @@ const Tasks = () => {
 	}
 
 	const correctTask = () => {
-		console.log('correctTask---',);
+	
+		console.log('correctTask---', errorMessage.text);
+		
+		const errorMessageCopy = { ...errorMessage }
 		const taskListCopy = [...tasksList];
 		const textFormCopy = { ...textForm };
 		let correctItem = taskListCopy.find((item) => item._id === correctId);
 		correctItem.name = textFormCopy.correctText;
 
+		// if (textForm[e.target.name].trim().length < 5) {
+		
+		// 	errorMessageCopy[e.target.name] = 'The task must contain at least 5 characters'
+		// 	setErrorMessage(errorMessageCopy)
+		// 	return;
+		// }
+
+		// if (checkInput(e)) {
+		// 	errorMessageCopy[e.target.name] = 'This task has already been created'
+		// 	setErrorMessage(errorMessageCopy)
+		// 	return;
+		// }
+
+
 		patchTasksOfUsers(correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
 
 		if (isCorrect === true) {
 			setIsCorrect(!isCorrect);
-		}
-		console.log('correctTask---', isCorrect)
+		}	
 	}
 
 
@@ -314,6 +329,7 @@ const Tasks = () => {
 						formName='correctText'
 						nameInput='correctText'
 						nameButton='correctButton'
+						errorMessage={errorMessage.correctText}
 					/>}
 
 				<div className='tasks-wrapper'>

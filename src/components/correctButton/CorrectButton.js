@@ -7,7 +7,7 @@ const CorrectButton = (props) => {
 	return (
 		
 			<button className="correct-btn" onClick={() => onClick()}>
-				correct
+				Correct selected task
 			</button>
 		
 

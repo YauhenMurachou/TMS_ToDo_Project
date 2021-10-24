@@ -11,7 +11,7 @@ function TaskUser(props) {
 		<li className='task-item'>
 			<span className='item-id'>{`${taskNumber}.`}</span>
 			<label className='item-name' htmlFor={taskNumber}>
-				{taskName}
+				{` ${taskName}`}
 			</label>
 			<input
 				type='checkbox'

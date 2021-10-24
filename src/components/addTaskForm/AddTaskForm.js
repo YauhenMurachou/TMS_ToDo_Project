@@ -17,8 +17,7 @@ const AddTaskForm = ({ onSubmit, onChange, value, nameInput, nameForm, errorMess
 
 						<input
 							value={value}
-							id="new-task"
-							// type="text"
+							id="new-task"							
 							onChange={onChange}
 							name={nameInput}
 						/>
