@@ -1,4 +1,4 @@
-.search-wrapper{
+.search-wrapper {
 	text-align: center;
 	font-size: 22px;
 
@@ -6,16 +6,23 @@
 		vertical-align: bottom;
 	}
 
-	#search-task{
+	#search-task {
 		width: 450px;
 		height: 22px;
 		border-radius: 5px;
-		border: 1px solid rgb(90, 89, 89);		
+		border: 1px solid rgb(90, 89, 89);
 	}
 
-	.search-button{
+	.search-button {
 		height: 28px;
 		max-width: 53px;
 		cursor: pointer;
+
+		&:hover {
+			background-color: rgb(87, 82, 82);
+			border: none;
+			border-radius: 3px;
+			color: white;
+		}
 	}
 }

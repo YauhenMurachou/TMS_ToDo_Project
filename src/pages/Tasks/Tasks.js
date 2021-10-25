@@ -84,7 +84,7 @@ const Tasks = () => {
 		} else {
 			let arrayCopy = [...tasksList];
 			const searchItemsCopy = arrayCopy.filter(item => item.name.includes(searchText));
-			setSearchItems(searchItemsCopy);					
+			setSearchItems(searchItemsCopy);
 		}
 	}
 
@@ -119,7 +119,6 @@ const Tasks = () => {
 		const errorMessageCopy = { ...errorMessage }
 
 		if (textForm[e.target.name].trim().length < 5) {
-
 			errorMessageCopy[e.target.name] = 'The task must contain at least 5 characters'
 			setErrorMessage(errorMessageCopy)
 			return;
@@ -128,7 +127,6 @@ const Tasks = () => {
 		if (checkInput(e)) {
 			errorMessageCopy[e.target.name] = 'This task has already been created'
 			setErrorMessage(errorMessageCopy)
-			console.log('handleTaskSubmit---', errorMessage);
 			return;
 		}
 
@@ -250,6 +248,10 @@ const Tasks = () => {
 		}
 	}
 
+	const closeCorrectTask = () => {
+		setIsCorrect(!isCorrect);
+	}
+
 
 	const renderTasks = (arr) => {
 		let result;
@@ -304,7 +306,7 @@ const Tasks = () => {
 			<section className='tasks-section'>
 
 				<div className='logo-tasks'>
-					
+
 				</div>
 
 				{timeOver && <TimeOverWindow
@@ -333,13 +335,14 @@ const Tasks = () => {
 
 				{isCorrect &&
 					<CorrectForm
+						onClick={() => closeCorrectTask()}
 						onChange={handleChange}
 						onSubmit={handleTaskSubmit}
 						value={textForm.correctText}
 						formName='correctText'
 						nameInput='correctText'
 						nameButton='correctButton'
-						errorMessage={errorMessage.correctText}
+					// errorMessage={errorMessage.correctText}
 					/>}
 
 				<div className='tasks-wrapper'>
