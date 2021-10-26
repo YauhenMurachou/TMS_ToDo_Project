@@ -2,7 +2,7 @@ import React from 'react';
 
 import './CorrectForm.scss';
 
-function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit, formName }) {
+function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit, formName, errorMessage }) {
 
 	return (
 		<>
@@ -44,7 +44,7 @@ function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit
 
 
 					</div>
-					{/* <div className='correct-error'> {errorMessage} </div> */}
+					<div className='correct-error'> {errorMessage} </div>
 				</form>
 			</div>
 

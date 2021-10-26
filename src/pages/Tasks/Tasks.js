@@ -161,7 +161,7 @@ const Tasks = () => {
 			})
 	}
 
-	const handleCheckbox = (id) => {
+	const handleCheckbox = (id) => {		
 		const taskListCopy = [...tasksList]
 		const delId = taskListCopy.findIndex((n) => n._id === id);
 		taskListCopy[delId].checked = !taskListCopy[delId].checked;
@@ -170,7 +170,9 @@ const Tasks = () => {
 
 		if (isCorrect === true) {
 			setIsCorrect(!isCorrect);
+			setErrorMessage({})
 		}
+		console.log('handleCheckbox--', errorMessage)
 	}
 
 	const patchTasksOfUsers = (taskID, taskListCopy, userId, typeBody = '', IDchecked = '', taskName = '') => {
@@ -244,12 +246,14 @@ const Tasks = () => {
 		patchTasksOfUsers(correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
 
 		if (isCorrect === true) {
-			setIsCorrect(!isCorrect);
+			setIsCorrect(!isCorrect);			
 		}
+		
 	}
 
 	const closeCorrectTask = () => {
 		setIsCorrect(!isCorrect);
+		setErrorMessage({})
 	}
 
 
@@ -285,12 +289,6 @@ const Tasks = () => {
 						role={role}
 					/>
 					}
-
-					{/* {item.checked && (
-						<button className="correct-btn" onClick={() => showCorrectForm(_id)}>
-							correct
-						</button>
-					)} */}
 
 					{item.checked && <CorrectButton
 						onClick={() => showCorrectForm(_id)}
@@ -342,7 +340,7 @@ const Tasks = () => {
 						formName='correctText'
 						nameInput='correctText'
 						nameButton='correctButton'
-					// errorMessage={errorMessage.correctText}
+					errorMessage={errorMessage.correctText}
 					/>}
 
 				<div className='tasks-wrapper'>
