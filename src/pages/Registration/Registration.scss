@@ -1,48 +1,40 @@
+.nav-top-line {
+	background-color: rgb(219, 76, 76);
+	height: 70px;
+	padding-left: 60px;
+
+	.nav-top-line-text {
+		margin-left: 30px;
+		color: white;
+		font-size: 30px;
+		display: inline-block;
+		font-style: italic;
+		margin-top: 20px;
+		vertical-align: top;
+	}
+
+	.fa-list-alt {
+		font-size: 70px;
+		color: white;
+	}
+}
+
 .registr-form {
 	border: 3px solid #f1f1f1;
 	max-width: 400px;
 	margin: 0 auto 0 auto;
 
-	.imgcontainer {
-		text-align: center;
-		margin: 24px 0 12px 0;
-	}
-
-	img.avatar {
-		width: 40%;
-		border-radius: 50%;
-	}
-
-	.sub-btn {
-		background-color: rgb(219, 76, 76);
-		color: white;
-		padding: 14px 20px;
-		margin: 8px 0;
-		border: none;
-		cursor: pointer;
-		width: 100%;
-		font-size: 20px;
-	}
-
 	button:hover {
 		opacity: 0.8;
 	}
 
-	.cancelbtn {
-		width: auto;
-		padding: 10px 18px;
-		background-color: rgb(219, 76, 76);
-	}
-
 	.container {
-		padding: 16px;
+		padding: 16px 16px 0px 16px;
 
 		label {
 			font-size: 24px;
 		}
-		.input-wrapper {
-			margin-top: 10px;
-		}
+	
 		.registration-input {
 			width: 100%;
 			padding: 12px 20px;

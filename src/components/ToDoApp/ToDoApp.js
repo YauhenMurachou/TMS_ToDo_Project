@@ -25,6 +25,7 @@ function ToDoApp() {
 
 
 	const handleSubmitSearch = (e) => {
+		console.log('handleSubmitSearch---')
 		e.preventDefault();
 		if (searchText === '') {
 			setSearchItems([])

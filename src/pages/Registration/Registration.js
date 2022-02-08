@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import '../Registration/Registration.scss';
 
 import { AuthInput, AuthSelect } from '../../components';
+import RegistrationInput from '../../components/registrationInput/RegistrationInput';
 import { Routes } from '../../utils/routes';
 import { authApi } from '../../api/authApi';
 import { usersApi } from '../../api/usersApi';
+import TimeOverWindow from '../../components/timeOverWindow/TimeOverWindow';
 
 const Registration = () => {
 
@@ -29,6 +31,8 @@ const Registration = () => {
 	});
 
 	const [admins, setAdmins] = useState([]);
+	const [isRegistr, setIsRegistr] = useState(false);
+	const [popUpContent, setPopUpContent] = useState('')
 
 	useEffect(() => {
 		getAdminsList()
@@ -45,7 +49,6 @@ const Registration = () => {
 	const { userNameValue, loginValue, pswValue, repeatPswValue, selectRoleValue, selectAdminValue } = signUpForm;
 	const { userNameError, loginError, pswError, repeatPswError, selectRoleError, selectAdminError } = signUpFormError;
 
-	// если поле пустое, присваиваем название пусто соответствующей ошибке и возвр тру
 	const handleCheckEmptyInput = (signUpForm, signUpFormError, inputName, errorName) => {
 		if (signUpForm[inputName] === '') {
 			signUpFormError[errorName] = 'empty'
@@ -140,7 +143,6 @@ const Registration = () => {
 		if (inputName !== '' && errorName !== '') {
 			handleCheckEmptyInput(signUpFormCopy, signUpFormErrorCopy, inputName, errorName)
 			setSignUpFormError(signUpFormErrorCopy)
-			// return true
 
 		} else {
 
@@ -211,6 +213,13 @@ const Registration = () => {
 		}
 
 		const response2 = await authApi.signUpUser(newUser)
+
+		const newUserName = newUser.userName
+
+		if (response2.statusText === 'Created') {
+			setIsRegistr(true)
+			setPopUpContent(`${selectRoleValue} '${newUserName}' is successfully registered. Go to data entry `)
+		}
 	}
 
 	const roleSelectOption = () => {
@@ -227,7 +236,7 @@ const Registration = () => {
 			<>{
 				admins.map(admin => {
 					const { _id, userName, login } = admin
-					return <option value={_id}>`${userName}, ${login}`</option>
+					return <option value={_id}>{userName}</option>
 				})
 			}</>
 		)
@@ -236,15 +245,23 @@ const Registration = () => {
 	return (
 		<div>
 
-			<div className='signin-top-line'>
+			<div className='nav-top-line'>
 				<i className="far fa-list-alt"></i>
-				<div className='signin-top-line-text'>Don't forget to... Your ToDo List
+				<div className='nav-top-line-text'>Don't forget to... Your ToDo List
 				</div>
 			</div>
+
+			{isRegistr && <TimeOverWindow
+				text={popUpContent}
+				onClick={() => window.location.reload()}
+				link='SignInRoute'
+			/>}
 
 			<form className='registr-form' onSubmit={handleSubmitForm}>
 
 				<div className='container'>
+
+					<img src='https://icon-library.com/images/registration-icon-png/registration-icon-png-17.jpg'/>
 
 					<AuthInput
 						inputTitle='Username:'
@@ -304,7 +321,7 @@ const Registration = () => {
 						inputTitle='Repeat password:'
 						inputType='password'
 						disabled={pswValue === '' ? true : pswError === 'notValid' ? true : false}
-						inputPlaceholder='Repeat password'
+						inputPlaceholder={pswValue === '' ? '' : pswError === 'notValid' ? '' : 'Repeat password'}
 						inputError={repeatPswError}
 						inputErrorName='repeatPswError'
 						inputValue={repeatPswValue}
@@ -324,7 +341,6 @@ const Registration = () => {
 						inputErrorName='selectRoleError'
 						inputValue={selectRoleValue}
 						inputValueName='selectRoleValue'
-						// defaultValueText=''
 						childOptions={roleSelectOption()}
 						emptyValidationText='Please, select your role'
 						handleChangeForm={handleChangeRole}
@@ -349,7 +365,33 @@ const Registration = () => {
 						)
 					}
 
-					<input type='submit' value='Sign Up' className='sub-btn' />
+					<RegistrationInput
+						inputType='submit'
+						inputValue='Sign Up'
+						disabled={(pswValue === '' ||
+							userNameValue === '' ||
+							loginValue === '' ||
+							pswValue === '' ||
+							repeatPswValue === '' ||
+							selectRoleValue === '' ||
+							(selectRoleValue === 'user' &&
+							selectAdminValue === '' )||
+							userNameError === 'empty' ||
+							loginError === 'empty' ||
+							pswError === 'empty' ||
+							repeatPswError === 'empty' ||
+							selectRoleError === 'empty' ||
+							selectAdminError === 'empty' ||
+							userNameError === 'notValid' ||
+							pswError === 'notValid' ||
+							loginError === 'notValid' ||
+							userNameError === 'alreadyExist' ||
+							loginError === 'alreadyExist' ||
+							repeatPswError === 'notMatch'
+						) ? true : false}
+					/>
+
+
 				</div>
 
 				<div className='form-or'>

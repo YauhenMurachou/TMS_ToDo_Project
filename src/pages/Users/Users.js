@@ -6,6 +6,7 @@ import './Users.scss';
 import { usersApi } from '../../api/usersApi';
 import UserItem from '../../components/userItem/UserItem';
 import SearchUserForm from '../../components/searchUserForm/SearchUserForm';
+import TimeOverWindow from '../../components/timeOverWindow/TimeOverWindow';
 
 const Users = () => {
 
@@ -13,6 +14,7 @@ const Users = () => {
 	const { token } = appState;
 	const [users, setUsers] = useState([])
 	const [searchText] = useState('')
+	const [timeOver, setTimeOver] = useState(false);
 
 	useEffect(() => {
 		getUsers()
@@ -26,6 +28,9 @@ const Users = () => {
 
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.error(error.message)
 			})
 	}
@@ -52,6 +57,12 @@ const Users = () => {
 	return (
 		<>
 			<section className='users'>
+
+			{timeOver && <TimeOverWindow
+					text='Your time is over! Go to signIn'
+					onClick={() => setTimeOver(false)}
+					link='SignInRoute'
+				/>}
 
 				<SearchUserForm
 					placeholder='Enter name of user'

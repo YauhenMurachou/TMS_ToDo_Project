@@ -1,5 +1,28 @@
+.logo-tasks{
+	background: url(../../lime-496.png);
+	height: 80px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 10px 0 10px 0;
+}
 
 
-.correct-btn{
-	background-color: rgb(71, 231, 132);
+.tasks-wrapper{	
+	text-align: center;
+
+	.tasks-list{
+		list-style-type: none;
+		text-align: center;
 	}
+	.correct-btn{
+		background-color: rgb(85, 101, 240);
+		color: #fff;
+		display: inline;
+		border: none;
+		padding: 5px;
+		border-radius: 3px;
+		font-size: 14px;
+		}
+}
+

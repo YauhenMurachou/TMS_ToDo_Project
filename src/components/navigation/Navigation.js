@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import '../navigation/Navigation.scss'
 
@@ -11,31 +11,36 @@ const Navigation = () => {
 
 	return <div className='nav-container'>
 
-		<Link to={Routes.HomeRoute}>
-			<div className='nav-item'>
-				Home
+		<div className='nav-top-line'>
+			<i className='far fa-list-alt'></i>
+			<div className='nav-top-line-text'>Don't forget to... Your ToDo List
 			</div>
-		</Link>
-		<Link to={Routes.SignInRoute}>
-			<div className='nav-item'>
-				Login
-			</div>
-		</Link>
-		<Link to={Routes.SignUpRoute}>
-			<div className='nav-item'>
-				Registration
-			</div>
-		</Link>
-		<Link to={Routes.TasksRoute}>
-			<div className='nav-item'>
-				Tasks
-			</div>
-		</Link>
-		<Link to={Routes.UsersRoute}>
-			<div className='nav-item'>
-				Users
-			</div>
-		</Link>
+		</div>
+
+		<div className='nav-right'>
+			<Link to={Routes.SignInRoute}>
+				<div className='nav-item-high'>
+					<div className='nav-item'>
+						Log Out
+					</div>
+				</div>
+			</Link>
+			<Link to={Routes.SignUpRoute}>
+				<div className='nav-item-high'>
+					<div className='nav-item'>
+						Registration
+					</div>
+				</div>
+			</Link>
+			<Link to={Routes.UsersRoute}>
+				<div className='nav-item-high'>
+					<div className='nav-item users-item' >
+						Users
+						<br />
+					</div>
+				</div>
+			</Link>
+		</div>
 	</div>
 }
 

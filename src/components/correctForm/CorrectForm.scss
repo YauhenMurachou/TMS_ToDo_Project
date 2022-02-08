@@ -1,10 +1,48 @@
-.correct-wrapper{
+.correct-wrapper {
 	// display: flex;
 	text-align: center;
 
-	.correct-wrapper-form{
+	.correct-wrapper-form {
 		// text-align: center;
 		display: inline-block;
 		// margin: auto 0;
+
+		.correct-label {
+			vertical-align: bottom;
+			font-size: 22px;
+		}
+
+		.correct-input {
+			width: 450px;
+			height: 22px;
+			border-radius: 5px;
+			border: 1px solid rgb(90, 89, 89);
+		}
+
+		.correct-complete-btn, .correct-close-button {
+			height: 28px;
+			max-width: 53px;
+			cursor: pointer;
+		}
+
+		.correct-complete-btn:hover {
+			background-color: rgb(87, 82, 82);
+			border: none;
+			border-radius: 3px;
+			color: white;
+		}
+
+		.correct-close-button:hover{
+			background-color: rgb(219, 76, 76);
+			color: white;
+			border: none;
+			border-radius: 3px;
+		}
+
+		.correct-error {
+			color: rgb(243, 52, 52);
+			font-size: 14px;
+			text-align: center;
+		}
 	}
 }

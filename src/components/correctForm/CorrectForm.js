@@ -2,7 +2,7 @@ import React from 'react';
 
 import './CorrectForm.scss';
 
-function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit, formName }) {
+function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit, formName, errorMessage }) {
 
 	return (
 		<>
@@ -15,7 +15,7 @@ function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit
 				>
 
 					<label className='correct-label' htmlFor='new-todo'>
-						Correct this task
+						Correct task:
 					</label>
 
 					<input
@@ -26,25 +26,28 @@ function CorrectForm({ onChange, onClick, value, nameInput, nameButton, onSubmit
 						name={nameInput}
 					/>
 
+					<input
+						className='correct-complete-btn'
+						type='submit'
+						name={nameButton}
+						value='correct'
+					/>				
+
 					<div className='correct-btns'>
 
-						<input
-							className='correct-complete-btn'
-							type='submit'
-							name={nameButton}
-							value='Correct'
-						/>
 
-						<button
-							className='correct-close-button'							
-							onClick={onClick}>
-							Close					
-						</button>
+					<button
+						className='correct-close-button'
+						onClick={onClick}>
+						cancel
+					</button>
+
 
 					</div>
+					<div className='correct-error'> {errorMessage} </div>
 				</form>
 			</div>
-			
+
 		</>
 	)
 }

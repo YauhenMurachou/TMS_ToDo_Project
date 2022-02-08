@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import TaskUser from '../../components/taskUser/TaskUser';
 import AddTaskForm from '../../components/addTaskForm/AddTaskForm';
 import CorrectForm from '../../components/correctForm/CorrectForm';
 import { addTasksList } from '../../redux/actions/toDoAppActions';
+import CorrectButton from '../../components/correctButton/CorrectButton';
+import TimeOverWindow from '../../components/timeOverWindow/TimeOverWindow';
 
 const Tasks = () => {
 
@@ -19,16 +21,25 @@ const Tasks = () => {
 
 	const appState = useSelector(state => state.toDoAppReducer);
 	const { token, role, tasksList } = appState;
+	const [searchItems, setSearchItems] = useState(null);
+	const [searchText, setSearchText] = useState('');
+	let [items, setItems] = useState([]);
+	let [correctId, setCorrectId] = useState('');
+	const [isCorrect, setIsCorrect] = useState(false);
+	const [timeOver, setTimeOver] = useState(false);
+	const [errorMessage, setErrorMessage] = useState({
+		text: '',
+		correctText: ''
+	});
 	const [textForm, setTextForm] = useState({
 		text: '',
 		correctText: ''
 	})
-
-	let [items, setItems] = useState([]);
-	let [correctId, setCorrectId] = useState('');
-	const [isCorrect, setIsCorrect] = useState(false)
+	const inputSearchEl = useRef(null);
 
 	useEffect(() => {
+		setTimeOver(false)
+
 		if (role === 'admin') {
 			getTasksForAdmin()
 		} else {
@@ -43,6 +54,9 @@ const Tasks = () => {
 				dispatch(addTasksList(res.data))
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.error(error.message)
 			})
 	}
@@ -54,18 +68,67 @@ const Tasks = () => {
 				dispatch(addTasksList(res.data))
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.error(error.message)
 			})
+	}
+
+	const handleSubmitSearch = (e) => {
+
+		e.preventDefault();
+		if (searchText === '') {
+			setSearchItems([])
+
+		} else {
+			let arrayCopy = [...tasksList];
+			const searchItemsCopy = arrayCopy.filter(item => item.name.includes(searchText));
+			setSearchItems(searchItemsCopy);
+		}
+	}
+
+	const handleChangeSearch = (e) => {
+		setSearchText(e.target.value);
+	}
+
+	const checkInput = (e) => {
+		let result = true;
+		let arrayCopy = [...tasksList]
+		let copyText = textForm[e.target.name];
+		copyText = copyText.replace(/\s/g, '').toLowerCase();
+
+		let index = arrayCopy.findIndex(item => item.name.replace(/\s/g, '').toLowerCase() === copyText);
+
+		if (index === -1) {
+			result = false
+		}
+		return result;
 	}
 
 	const handleChange = (e) => {
 		const textFormCopy = { ...textForm }
 		textFormCopy[e.target.name] = e.target.value
 		setTextForm(textFormCopy)
+		setErrorMessage({})
 	}
 
 	const handleTaskSubmit = e => {
 		e.preventDefault();
+
+		const errorMessageCopy = { ...errorMessage }
+
+		if (textForm[e.target.name].trim().length < 5) {
+			errorMessageCopy[e.target.name] = 'The task must contain at least 5 characters'
+			setErrorMessage(errorMessageCopy)
+			return;
+		}
+
+		if (checkInput(e)) {
+			errorMessageCopy[e.target.name] = 'This task has already been created'
+			setErrorMessage(errorMessageCopy)
+			return;
+		}
 
 		if (e.target.name === 'text') {
 			createTaskByAdmin()
@@ -91,11 +154,14 @@ const Tasks = () => {
 				}
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.log(error)
 			})
 	}
 
-	const handleCheckbox = (id) => {
+	const handleCheckbox = (id) => {		
 		const taskListCopy = [...tasksList]
 		const delId = taskListCopy.findIndex((n) => n._id === id);
 		taskListCopy[delId].checked = !taskListCopy[delId].checked;
@@ -104,9 +170,9 @@ const Tasks = () => {
 
 		if (isCorrect === true) {
 			setIsCorrect(!isCorrect);
+			setErrorMessage({})
 		}
-
-		console.log('handleCheckbox---', isCorrect)
+		console.log('handleCheckbox--', errorMessage)
 	}
 
 	const patchTasksOfUsers = (taskID, taskListCopy, userId, typeBody = '', IDchecked = '', taskName = '') => {
@@ -133,6 +199,9 @@ const Tasks = () => {
 				}
 			})
 			.catch(error => {
+				if (error.response.status === 401) {
+					setTimeOver(true)
+				}
 				console.log(error)
 			})
 	}
@@ -164,27 +233,27 @@ const Tasks = () => {
 		setCorrectId(id);
 		textFormCopy.correctText = correctItem.name;
 
-		// console.log('showCorrectForm---', textFormCopy.correctText, isCorrect)
 		if (isCorrect === false) {
 			setIsCorrect(!isCorrect);
 		}
-
-
 	}
 
 	const correctTask = () => {
-		console.log('correctTask---',);
 		const taskListCopy = [...tasksList];
 		const textFormCopy = { ...textForm };
 		let correctItem = taskListCopy.find((item) => item._id === correctId);
 		correctItem.name = textFormCopy.correctText;
-
 		patchTasksOfUsers(correctId, taskListCopy, correctItem.userId, 'name', '', textFormCopy.correctText)
 
 		if (isCorrect === true) {
-			setIsCorrect(!isCorrect);
+			setIsCorrect(!isCorrect);			
 		}
-		console.log('correctTask---', isCorrect)
+		
+	}
+
+	const closeCorrectTask = () => {
+		setIsCorrect(!isCorrect);
+		setErrorMessage({})
 	}
 
 
@@ -220,11 +289,10 @@ const Tasks = () => {
 						role={role}
 					/>
 					}
-					{item.checked && (
-						<button className="correct-btn" onClick={() => showCorrectForm(_id)}>
-							correct
-						</button>
-					)}
+
+					{item.checked && <CorrectButton
+						onClick={() => showCorrectForm(_id)}
+					/>}
 				</>
 			)
 		});
@@ -235,32 +303,53 @@ const Tasks = () => {
 		<>
 			<section className='tasks-section'>
 
+				<div className='logo-tasks'>
+
+				</div>
+
+				{timeOver && <TimeOverWindow
+					text='Your time is over! Go to signIn'
+					onClick={() => setTimeOver(false)}
+					link='SignInRoute'
+				/>}
+
+
 				{role === 'admin' && < AddTaskForm
 					value={textForm.text}
 					onChange={handleChange}
 					onSubmit={handleTaskSubmit}
 					nameInput='text'
 					nameForm='text'
+					errorMessage={errorMessage.text}
 				/>}
 
-				<SearchTaskForm />
+				<SearchTaskForm
+					onSubmit={handleSubmitSearch}
+					onChange={handleChangeSearch}
+					value={searchText}
+					ref={inputSearchEl}
+				/>
+				{/* {changeTask()} */}
 
 				{isCorrect &&
 					<CorrectForm
+						onClick={() => closeCorrectTask()}
 						onChange={handleChange}
 						onSubmit={handleTaskSubmit}
 						value={textForm.correctText}
 						formName='correctText'
 						nameInput='correctText'
 						nameButton='correctButton'
+					errorMessage={errorMessage.correctText}
 					/>}
 
 				<div className='tasks-wrapper'>
 
 					<ul className='tasks-list'>
-						{tasksList && tasksList.length > 0 && renderTasks(tasksList)}
+						{tasksList && tasksList.length > 0 && !searchItems && renderTasks(tasksList)}
+						{searchItems && renderTasks(searchItems)}
 					</ul>
-					<ToDoApp />
+					{/* <ToDoApp /> */}
 				</div>
 
 			</section>

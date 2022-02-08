@@ -4,12 +4,36 @@ a {
 
 .nav-container {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 	background-color: rgb(219, 76, 76);
 	align-items: center;
 	height: 70px;
 
-	.nav-item {
+	.nav-top-line {
+		padding-left: 60px;
+
+		.nav-top-line-text {
+			margin-left: 30px;
+			color: white;
+			font-size: 30px;
+			display: inline-block;
+			font-style: italic;
+			margin-top: 20px;
+			vertical-align: top;
+		}
+
+		.fa-list-alt {
+			font-size: 70px;
+			color: white;
+		}
+	}
+
+	.nav-right{
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.nav-item-high {
 		cursor: pointer;
 		height: 100px;
 		font-size: 25px;
@@ -19,9 +43,34 @@ a {
 		color: white;
 	}
 
-	.nav-item:hover {
+	.nav-item {
+		cursor: pointer;
+		height: 20px;
+		font-size: 25px;
+		width: 150px;
+		line-height: 20px;
+		text-align: center;
+		color: inherit;
+		padding-top: 40px;
+	}
+
+	.nav-item-high:hover {
 		background-color: white;
 		color: rgb(219, 76, 76);
 		transition: 0.7s;
+	}
+
+	.users-item {
+		cursor: pointer;
+		font-size: 25px;
+		width: 150px;
+		text-align: center;
+		color: inherit;
+	}
+
+	.users-item:after {
+		font-size: 10px;
+		content: "(only for admins)";
+		margin-top: 5px;
 	}
 }

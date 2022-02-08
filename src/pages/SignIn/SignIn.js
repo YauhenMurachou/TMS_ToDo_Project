@@ -119,73 +119,74 @@ const SignIn = () => {
 
 
 	return (
-		<div>
-			<div className='signin-top-line'>
+		<>
+			<div className='nav-top-line'>
 				<i className="far fa-list-alt"></i>
-				<div className='signin-top-line-text'>Don't forget to... Your ToDo List
+				<div className='nav-top-line-text'>Don't forget to... Your ToDo List
 				</div>
 			</div>
-			<form className='registr-form' onSubmit={handleSubmitForm}>
-			
-				<div className='imgcontainer'>
-					<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgxfDAMqK3mhyikTk6uhY8Bn3HdpjkMvuzLQ&usqp=CAU' alt='Avatar' class='avatar' />
+			<section className='section'>
+
+				<div className='section-container'>
+
+					<form className='registr-form' onSubmit={handleSubmitForm}>
+						<div className='registr-form-title'>
+						Welcome to our community, anonymous
+						</div>
+						<div className='imgcontainer'>
+							<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgxfDAMqK3mhyikTk6uhY8Bn3HdpjkMvuzLQ&usqp=CAU' alt='Avatar' class='avatar' />
+						</div>
+						<div className='container'>
+							<AuthInput
+								inputTitle='Username:'
+								inputType='text'
+								disabled={false}
+								inputPlaceholder='Enter username'
+								inputError={userNameError}
+								inputErrorName='userNameError'
+								inputValue={userNameValue}
+								inputValueName='userNameValue'
+								inputName='userNameValue'
+								emptyValidationText='Please, enter username'
+								invalidValidationText=''
+								existsValidationText=''
+								notExistsValidationText='There is no user with this username'
+								matchValidationText=''
+								handleChangeForm={handleChangeLoginForm}
+								handleCheckValidForm={handleCheckEmptyForm}
+							/>
+							<AuthInput
+								inputTitle='Password:'
+								inputType='password'
+								disabled={false}
+								inputPlaceholder='Enter password'
+								inputError={pswError}
+								inputErrorName='pswError'
+								inputValue={pswValue}
+								inputValueName='pswValue'
+								inputName='pswValue'
+								emptyValidationText='Please, enter password'
+								invalidValidationText='Wrong password'
+								existsValidationText=''
+								notExistsValidationText=''
+								matchValidationText=''
+								handleChangeForm={handleChangeLoginForm}
+								handleCheckValidForm={handleCheckEmptyForm}
+							/>
+							<button type='submit' className='signin-btn'>Sign In</button>
+						</div>
+						<div className='form-or'>
+							Don't have an account yet?
+						</div>
+						<Link to={Routes.SignUpRoute} >
+							<div className='registration-redirect'>
+								<span>Go to registration</span>
+							</div>
+						</Link>
+					</form>
 				</div>
-
-				<div className='container'>
-
-					<AuthInput
-						inputTitle='Username:'
-						inputType='text'
-						disabled={false}
-						inputPlaceholder='Enter username'
-						inputError={userNameError}
-						inputErrorName='userNameError'
-						inputValue={userNameValue}
-						inputValueName='userNameValue'
-						inputName='userNameValue'
-						emptyValidationText='Please, enter username'
-						invalidValidationText=''
-						existsValidationText=''
-						notExistsValidationText='There is no user with this username'
-						matchValidationText=''
-						handleChangeForm={handleChangeLoginForm}
-						handleCheckValidForm={handleCheckEmptyForm}
-					/>
-
-					<AuthInput
-						inputTitle='Password:'
-						inputType='password'
-						disabled={false}
-						inputPlaceholder='Enter password'
-						inputError={pswError}
-						inputErrorName='pswError'
-						inputValue={pswValue}
-						inputValueName='pswValue'
-						inputName='pswValue'
-						emptyValidationText='Please, enter password'
-						invalidValidationText='Wrong password'
-						existsValidationText=''
-						notExistsValidationText=''
-						matchValidationText=''
-						handleChangeForm={handleChangeLoginForm}
-						handleCheckValidForm={handleCheckEmptyForm}
-					/>
-
-					<button type='submit' className='signin-btn'>Sign In</button>
-
-				</div>
-
-				<div className='form-or'>
-					Don't have an account yet?
-				</div>
-
-				<Link to={Routes.SignUpRoute} >
-					<div className='registration-redirect'>
-						<span>Go to registration</span>
-					</div>
-				</Link>
-			</form>
-		</div>
+			</section>
+		</>
 	)
 };
 
