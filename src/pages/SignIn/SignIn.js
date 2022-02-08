@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Jwt from 'jsonwebtoken';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 

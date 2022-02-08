@@ -21,9 +21,6 @@ function ToDoApp() {
 	}, []
 	);
 
-
-
-
 	const handleSubmitSearch = (e) => {
 		console.log('handleSubmitSearch---')
 		e.preventDefault();
@@ -45,8 +42,7 @@ function ToDoApp() {
 		setText(e.target.value);
 	}
 
-	const removeTask = (id) => {
-		// console.log('delete task')
+	const removeTask = (id) => {	
 		let newItems = items.slice();
 		const delId = newItems.findIndex((n) => n.id === id);
 		newItems.splice(delId, 1);

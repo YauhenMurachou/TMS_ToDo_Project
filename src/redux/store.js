@@ -9,4 +9,6 @@ const store = createStore(
 	
 	));
 
+	// in index.js (inside reducers) мы опеределяем rootReducer
+
 export default store;

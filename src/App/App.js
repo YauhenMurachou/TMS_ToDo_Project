@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 
 import './App.css';
 
@@ -12,8 +13,8 @@ import { AuthorizedRoute, NotAuthorizedRoute } from '../components/routes';
 const App = () => {
 
 	const { token, role } = useSelector(state => state.toDoAppReducer)
-
-	return (
+	// useSelector - получаем данные из store (т.е. из state),файл toDoAppReducer
+		return (
 		<Router>
 
 			<NotAuthorizedRoute exact path={Routes.HomeRoute}
@@ -27,6 +28,8 @@ const App = () => {
 
 			<AuthorizedRoute exact path={Routes.TasksRoute}
 				isAuthorized={Boolean(token)}
+//токен присваивается в файле toDoAppReducer, с помощью функции getCookie
+
 				hasPermission={role === 'user'}
 				component={Tasks} />
 
@@ -41,7 +44,6 @@ const App = () => {
 				isAuthorized={Boolean(token)}
 				hasPermission={role === 'admin'}
 			/>
-
 		</Router>
 	)
 };
